@@ -1,0 +1,4 @@
+AuthType Basic
+AuthUserFile /var/www/.passwds		
+AuthName "Entrez votre mot de passe" 	
+require valid-user
