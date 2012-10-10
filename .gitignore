@@ -1,0 +1,13 @@
+# les fichiers du repertoire.
+
+GnOmeDataCenter/out/*
+
+GnOmeDataCenter/log_brut/*
+
+GnOmeDataCenter/log/*
+
+diy/wikiss/_config.php
+
+Build/*
+
+emoncms3/emoncms3/Includes/settings.php
