@@ -5,6 +5,11 @@
 <description>Flux RSS de WiKiss : le Wiki Kiss</description>
 <language>fr</language>
 <item>
+            <title>serveurgdc</title>
+            <pubDate>Wed, 10 Oct 2012 16:52:37 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=serveurgdc</link>
+            <description>serveurgdc 2012/10/10 16:52</description>
+            </item><item>
             <title>screen</title>
             <pubDate>Tue, 09 Oct 2012 18:08:22 +0200</pubDate>
             <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=screen</link>
@@ -14,11 +19,6 @@
             <pubDate>Tue, 09 Oct 2012 18:06:55 +0200</pubDate>
             <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=Accueil</link>
             <description>Accueil 2012/10/09 18:06</description>
-            </item><item>
-            <title>serveurgdc</title>
-            <pubDate>Fri, 05 Oct 2012 17:16:53 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=serveurgdc</link>
-            <description>serveurgdc 2012/10/05 17:16</description>
             </item><item>
             <title>solaire</title>
             <pubDate>Wed, 03 Oct 2012 15:15:05 +0200</pubDate>
