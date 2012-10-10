@@ -1,0 +1,86 @@
+
+// 2012/10/05 17:16 /  37.8.163.165
+!Serveur GDC
+!! Matos
+* [raspberry pi|http://www.raspberrypi.org/]
+* [arduino|http://www.arduino.cc/] avec le firmware rf433->serie
+!! Source 
+* projet GDC ([toochain|../../Build/new/], [bsp|https://github.com/AlexandreCo/OSELAS.BSP-fga-Raspberry-2011.11.0/] ...)
+* firmware [arduino|http://www.arduino.cc/], schematique, code sources sur le [launchpad|https://code.launchpad.net/~gnome-sage/+junk/DataCenter]
+!! Idée en vrac
+!!!Capteur
+* capteur niveau du puits
+* capteur vent
+* capteur pluie
+* capteur température : [ThermRf|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/ThermRF/] ,[PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur pression : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur Humiditée : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/]
+* openmonitor http://chafouin.no-ip.org:8014/emoncms3/emoncms3 
+* ...
+!!!Contacteur
+* chaudière 
+* ...
+
+!!Astuces
+* [ptxdist]
+
+!! Configuration
+A partir de l'image "2012-09-18-wheezy-raspbian": 
+http://downloads.raspberrypi.org/download.php?file=/images/raspbian/2012-09-18-wheezy-raspbian/2012-09-18-wheezy-raspbian.zip
+
+!!! Avant 1er boot
+Finally, if you have an sd larger than 2GB, grow the partition with gparted (first move the swap partition at the end).
+{{gparted}}
+
+The pi password is raspberry.
+!!! First boot
+*{{sudo raspi-config}}
+
+!!!crontab 
+*Sauvegarde tous les jours 6h30 {{30 6 * * * /home/pi/Documents/scripts/save.sh}}
+*Génération des courbes vigicrue tous les jours 5h15 {{15 5 * * * /home/pi/Documents/scripts/vigicrue/run_vigicrue.sh}}
+*Génération des courbes Meteo tous les jours 5:30 {{30 5 * * * /home/pi/Documents/scripts/rf2txt/meteo.sh}}
+*archive tous les jours 6h00 {{0 6 * * * //home/pi/Documents/scripts/rf2txt/archive_rf2txt}}
+!!!fstab
+{{proc            /proc           proc    defaults          0       0
+/dev/mmcblk0p1  /boot           vfat    defaults          0       2
+/dev/mmcblk0p2  /               ext4    defaults,noatime  0       1
+//mafreebox.freebox.fr/Disque\040dur /media/freebox cifs netdev,guest,directio,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777 0 0
+}} 
+{{mkdir /media/freebox}}
+!!!packages
+{{sudo apt-get update
+sudo apt-get install php5
+sudo apt-get install gnuplot
+sudo apt-get install cifs-utils
+sudo apt-get install rsync
+sudo apt-get install fail2ban
+sudo apt-get install ftp
+}}
+!!!GnOmeDataCenter
+{{
+sudo chmod a+rw /var/www/GnOmeDataCenter/log /var/www/GnOmeDataCenter/out /var/www/GnOmeDataCenter/log_brut/
+cd ~/Documents/Sources/rf2txt-1.0
+make
+sudo cp rf2txt /usr/bin/
+sudo cp ~/Documents/scripts/rf2txt/rf2txt /etc/init.d/rf2txt
+sudo update-rc.d rf2txt defaults
+}}
+!!! www
+{{cd /var/
+wget http://gnome.sage.free.fr/diy/www;tar.bz2
+sudo tar -xzvf Documents.tar.gz
+sudo chmod a+rw /var/www/GnOmeDataCenter/log /var/www/GnOmeDataCenter/out /var/www/GnOmeDataCenter/log_brut/
+sudo chown -R root:root /var/www
+sudo chown -R www-data:www-data /var/www/diy/wikiss/pages
+sudo chown -R www-data:www-data /var/www/diy/wikiss/historique
+sudo chown -R www-data:www-data /var/www/diy/wikiss/rss.xml
+}}
+!!!home
+{{cd ~/
+wget http://gnome.sage.free.fr/diy/Documents.tar.gz
+tar -xzvf Documents.tar.gz
+}}
+
+TOC
+

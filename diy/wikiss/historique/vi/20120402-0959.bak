@@ -1,0 +1,27 @@
+
+// 2012/04/02 09:59 /  217.128.225.12
+!Vi
+!!Trucs et astuces
+!!! vi sous ubuntu avec la possibilité d'utiliser les flèches en mode insertion
+créez ou éditez le fichier ~/.vimrc et ajoutez
+{{set nocompatible}}
+!!!Commandes de base
+*i	 Passer dans le mode insertion
+*A	 Ajouter en fin de ligne
+*:q	 Quitter
+*:q!	 Quitter sans enregistrer
+*:w	 Enregistrer le fichier
+*:wq	 Enregistrer et quitter
+*:x	 Enregistrer (seulement en cas de modification) et quitter
+!!!Commandes d'édition:
+* yy	 Copier la ligne (4yy = 4 lignes)
+* dd	 Couper la ligne (4dd = 4 lignes)
+* p	 Coller après 
+* P	 Insérer avant
+!!!Recherche / remplacement:
+* /	 Rechercher du texte
+* n	 Rechercher l'occurence suivante
+* N	 Rechercher l'occurence précédente
+* cw	 Remplacer le texte jusqu'à la fin du mot
+* :%s/A/B/g	 Remplacer tous (g) les A par des B
+

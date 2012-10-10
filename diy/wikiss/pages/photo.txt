@@ -1,0 +1,9 @@
+!exiftool
+!!Renommer les fichiers par rapport a la date présente dans les exifs
+* commande : {{exiftool -d "%Y-%m-%d %H.%M.%S%%-c.%%e" "-filename&lt;CreateDate" .}}
+* résultat (conforme samsung gio) : 2012-04-12 06.16.04.jpg
+
+!!Modifier la date de modification du fichier jpg par rapport a la date présente dans les exifs
+* commande : {{exiftool "-FileModifyDate&lt;CreateDate" .}}
+
+TOC

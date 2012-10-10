@@ -1,0 +1,7 @@
+
+// 2012/09/19 14:25 /  192.168.0.14
+!!Commandes utiles
+* Indique l'horaire de la dernière tâche exécutée pour l'ensemble des utilisateurs :{{ls -lut /etc/init.d/cron}}
+* Extrait du journal du système les informations concernant la table cron : {{grep -w cron /var/log/syslog}}
+* Relance le démon cron {{/etc/init.d/cron force-reload}}
+

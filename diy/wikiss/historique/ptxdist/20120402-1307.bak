@@ -1,0 +1,12 @@
+
+// 2012/04/02 13:07 /  217.128.225.12
+!Astuces concernant la ptxdist
+!! .bashrc
+{{if [ 1 ]; then
+export 
+PATH_TOOLCHAIN=/opt/OSELAS.Toolchain-1.99.3/i686-unknown-linux-gnu/gcc-4.3.2-glibc-2.8-binutils-2.18-kernel-2.6.35.9-sanitized/
+export CROSS_COMPILE=i686-unknown-linux-gnu-
+export PATH=$PATH:$PATH_TOOLCHAIN/bin/
+alias ptxdist='ptxdist-2011.01.0'
+fi}}
+

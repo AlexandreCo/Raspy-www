@@ -1,0 +1,33 @@
+
+// 2012/09/20 15:50 /  217.128.225.12
+!Serveur GDC
+!! Matos
+* [raspberry pi|http://www.raspberrypi.org/]
+* [arduino|http://www.arduino.cc/] avec le firmware rf433->serie
+!! Source 
+* projet GDC ([toochain|../../Build/new/], [bsp|https://github.com/AlexandreCo/OSELAS.BSP-fga-Raspberry-2011.11.0/] ...)
+* firmware [arduino|http://www.arduino.cc/], schematique, code sources sur le [launchpad|https://code.launchpad.net/~gnome-sage/+junk/DataCenter]
+!! Idée en vrac
+!!!Capteur
+* capteur niveau du puits
+* capteur vent
+* capteur pluie
+* capteur température : [ThermRf|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/ThermRF/] ,[PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur pression : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur Humiditée : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/]
+
+* ...
+!!!Contacteur
+* chaudière 
+* ...
+
+!!Astuces
+* [ptxdist]
+
+!! conf
+!!!crontab 
+*Sauvegarde tous les jours 5h00 {{0 5 * * * /home/pi/Documents/scripts/save.sh}}
+*Génération des courbes vigicrue tous les jours 5h15 {{15 5 * * * /home/pi/Documents/scripts/vigicrue/run_vigicrue.sh}}
+!!!packages
+
+TOC

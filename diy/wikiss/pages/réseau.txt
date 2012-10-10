@@ -1,0 +1,66 @@
+!exim4
+Paramétrage d'exim4 avec une messagerie Gmail
+!!Installation d'exim4 
+{{sudo apt-get install exim4}}
+!!Paramétrage pseudo automatisé
+{{sudo dpkg-reconfigure exim4-config}}
+!!Ou modification manuel du fichier de conf
+{{$ cat /etc/exim4/update-exim4.conf.conf
+# /etc/exim4/update-exim4.conf.conf
+#
+# Edit this file and /etc/mailname by hand and execute update-exim4.conf
+# yourself or use 'dpkg-reconfigure exim4-config'
+#
+# Please note that this is _not_ a dpkg-conffile and that automatic changes
+# to this file might happen. The code handling this will honor your local
+# changes, so this is usually fine, but will break local schemes that mess
+# around with multiple versions of the file.
+#
+# update-exim4.conf uses this file to determine variable values to generate
+# exim configuration macros for the configuration file.
+#
+# Most settings found in here do have corresponding questions in the
+# Debconf configuration, but not all of them.
+#
+# This is a Debian specific file
+
+dc_eximconfig_configtype='smarthost'
+dc_other_hostnames=''
+dc_local_interfaces='127.0.0.1'
+dc_readhost='TerraServer'
+dc_relay_domains=''
+dc_minimaldns='false'
+dc_relay_nets=''
+dc_smarthost='smtp.gmail.com::587'
+CFILEMODE='644'
+dc_use_split_config='true'
+dc_hide_mailname='false'
+dc_mailname_in_oh='true'
+dc_localdelivery='mail_spool'
+}}
+!!Edition du fichier de password/login gmail
+{{$ cat /etc/exim4/passwd.client
+# password file used when the local exim is authenticating to a remote
+# host as a client.
+#
+# see exim4_passwd_client(5) for more documentation
+#
+# Example:
+### target.mail.server.example:login:password
+*.google.com:login@gmail.com:password
+}}
+!!Redémarrage d'exim
+{{sudo update-exim4.conf
+sudo invoke-rc.d exim4 restart
+sudo exim4 -qff
+}}
+!!Envoi d'un mail quand une commande est terminée
+{{&lt;command>; echo "job done..." | mail -s "job done" mail@gmail.com}}
+!!Fichier de log
+{{sudo cat  tail /var/log/exim4/mainlog}}
+!!Remarque
+Gmail limite à 100 envoi de mail/jour/compte 
+!NMAP
+!! lister les ips
+{{nmap -sP -PE -PA21,23,80,3389 192.168.0.1/24}}
+TOC

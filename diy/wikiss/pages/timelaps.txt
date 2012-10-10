@@ -1,0 +1,10 @@
+!Timelaps
+!! Matos
+* [arduino|http://www.arduino.cc/] avec le firmware timelaps
+!! Source 
+* firmware [arduino|http://www.arduino.cc/], schematique, code sources sur le [launchpad|https://code.launchpad.net/~gnome-sage/+junk/Timelapse]
+!! Idée en vrac
+
+!!Astuces
+
+TOC

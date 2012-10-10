@@ -1,0 +1,16 @@
+!!Le matos
+* Un ecowatt
+* Ptxdist
+
+!!Quelques liens 
+* ...
+
+
+!! Idées en vrac
+* Gestion de la mise en mode communication via un arduino + fet sur l'alim de l'usb par GDC
+* Développer une IHM
+* ...
+
+!! Etat du projet
+* Développé [source ici|https://code.launchpad.net/~gnome-sage/+junk/Ecowatt]
+* A intégrer dans une ptxdist :[fait ici | https://github.com/AlexandreCo/OSELAS.BSP-fga-Raspberry-2011.11.0/]

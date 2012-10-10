@@ -1,0 +1,16 @@
+
+// 2012/04/02 09:51 /  217.128.225.12
+!Vi
+!!Trucs et astuces
+* vi sous ubuntu avec la possibilité d'utiliser les flèches en mode insertion
+créez ou éditez le fichier ~/.vimrc et ajoutez
+{{set nocompatible}}
+
+
+// 2012/04/02 09:51 /  217.128.225.12
+!Vi
+!!Trucs et astuces
+!!! vi sous ubuntu avec la possibilité d'utiliser les flèches en mode insertion
+créez ou éditez le fichier ~/.vimrc et ajoutez
+{{set nocompatible}}
+

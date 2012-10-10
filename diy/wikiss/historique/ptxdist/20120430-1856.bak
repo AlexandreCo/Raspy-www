@@ -1,0 +1,16 @@
+
+// 2012/04/30 18:56 /  192.168.0.254
+!Astuces concernant la ptxdist
+!! prerequi :
+{{apt-get install ncurses-dev texinfo gawk}}
+!! .bashrc
+A ajouter au .bashrc  sous linux pour compiler le [BSP Oselas|http://chafouin.no-ip.org:2012/Build/new/] du projet GDC
+{{if [ 1 ]; then
+export 
+PATH_TOOLCHAIN=/opt/OSELAS.Toolchain-1.99.3/i686-unknown-linux-gnu/gcc-4.3.2-glibc-2.8-binutils-2.18-kernel-2.6.35.9-sanitized/
+export CROSS_COMPILE=i686-unknown-linux-gnu-
+export PATH=$PATH:$PATH_TOOLCHAIN/bin/
+alias ptxdist='ptxdist-2011.01.0'
+fi}}
+TOC
+

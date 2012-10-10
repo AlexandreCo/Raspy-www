@@ -1,0 +1,59 @@
+<rss version="0.91">
+<channel>
+<title>WiKiss : le Wiki Kiss</title>
+<link>http://chafouin.no-ip.org/diy/wikiss/index.php</link>
+<description>Flux RSS de WiKiss : le Wiki Kiss</description>
+<language>fr</language>
+<item>
+            <title>screen</title>
+            <pubDate>Tue, 09 Oct 2012 18:08:22 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=screen</link>
+            <description>screen 2012/10/09 18:08</description>
+            </item><item>
+            <title>Accueil</title>
+            <pubDate>Tue, 09 Oct 2012 18:06:55 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=Accueil</link>
+            <description>Accueil 2012/10/09 18:06</description>
+            </item><item>
+            <title>serveurgdc</title>
+            <pubDate>Fri, 05 Oct 2012 17:16:53 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=serveurgdc</link>
+            <description>serveurgdc 2012/10/05 17:16</description>
+            </item><item>
+            <title>solaire</title>
+            <pubDate>Wed, 03 Oct 2012 15:15:05 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=solaire</link>
+            <description>solaire 2012/10/03 15:15</description>
+            </item><item>
+            <title>vi</title>
+            <pubDate>Tue, 25 Sep 2012 15:03:45 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=vi</link>
+            <description>vi 2012/09/25 15:03</description>
+            </item><item>
+            <title>timelaps</title>
+            <pubDate>Thu, 20 Sep 2012 22:12:17 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=timelaps</link>
+            <description>timelaps 2012/09/20 22:12</description>
+            </item><item>
+            <title>vent</title>
+            <pubDate>Thu, 20 Sep 2012 22:12:17 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=vent</link>
+            <description>vent 2012/09/20 22:12</description>
+            </item><item>
+            <title>test</title>
+            <pubDate>Thu, 20 Sep 2012 22:12:16 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=test</link>
+            <description>test 2012/09/20 22:12</description>
+            </item><item>
+            <title>ssh</title>
+            <pubDate>Thu, 20 Sep 2012 22:12:15 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=ssh</link>
+            <description>ssh 2012/09/20 22:12</description>
+            </item><item>
+            <title>serie</title>
+            <pubDate>Thu, 20 Sep 2012 22:12:13 +0200</pubDate>
+            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=serie</link>
+            <description>serie 2012/09/20 22:12</description>
+            </item>
+</channel>
+</rss>

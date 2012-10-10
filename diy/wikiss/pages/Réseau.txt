@@ -1,0 +1,19 @@
+!Réseau
+!! Plusieurs adresse ip sur une même adresse mac
+{{ifconfig eth0 192.168.0.10 netmask 255.255.255.0 broadcast 192.168.0.255
+ifconfig eth0:1 192.168.0.123 netmask 255.255.255.0 broadcast 192.168.0.255
+ifconfig eth0:2 192.168.0.251 netmask 255.255.255.0 broadcast 192.168.0.255
+ifconfig eth0:3 192.168.0.15 netmask 255.255.255.0 broadcast 192.168.0.255
+
+route add -host 192.168.0.10 eth0
+route add -host 192.168.0.123 eth0:1
+route add -host 192.168.0.251 eth0:2
+route add -host 192.168.0.15 eth0:3
+
+route add default gw  192.168.0.1 eth0
+route add default gw  192.168.0.1 eth0:1
+route add default gw  192.168.0.1 eth0:2
+route add default gw  192.168.0.1 eth0:3
+}}
+
+TOC

@@ -1,0 +1,41 @@
+
+// 2012/03/26 21:12 /  192.168.0.19
+!!Le matos
+
+* Un arduino
+* Des diodes
+* Des resistances
+
+!!Quelques liens 
+* [hackaday|http://hackaday.com/2011/10/06/vetinari-clock-will-drive-you-insane/]
+* [cibomahto|http://www.cibomahto.com/2008/03/controlling-a-clock-with-an-arduino/]
+
+
+!! Idées en vrac
+* Gestion de l'heure via un brodcast 433Mhz de l'heure synchro NTP par GDC
+* Via ce systeme gestion d'une horloge a marée
+* Gestion de la mise a l'heure d'hiver et d'été automatiquement
+* ...
+
+
+// 2012/03/26 21:12 /  192.168.0.19
+!!Le matos
+
+* Un arduino
+* Des diodes
+* Des resistances
+
+!!Quelques liens 
+* [hackaday|http://hackaday.com/2011/10/06/vetinari-clock-will-drive-you-insane/]
+* [cibomahto|http://www.cibomahto.com/2008/03/controlling-a-clock-with-an-arduino/]
+
+
+!! Idées en vrac
+* Gestion de l'heure via un brodcast 433Mhz de l'heure synchro NTP par GDC
+* Via ce systeme gestion d'une horloge a marée
+* Gestion de la mise a l'heure d'hiver et d'été automatiquement
+* ...
+
+!! Etat du projet
+en cours de reflexion
+

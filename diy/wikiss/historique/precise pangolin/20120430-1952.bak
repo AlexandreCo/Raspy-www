@@ -1,0 +1,41 @@
+
+// 2012/04/30 19:52 /  192.168.0.254
+!gnome-panel
+Ajouter/supprimer des éléments :
+* Faire alt + clic gauche sur un élément du gnome-panel par exemple le reseau
+* Sans lacher le clic gauche et le alt faire clic droit
+* Relâcher le clic droit Sans lacher le clic gauche et le alt puis se déplacer à un emplacement libre
+* Sans lacher le clic gauche et le alt faire clic droit "ajouter au tableau de bord"
+
+!Son au démarrage
+Je ne comprends pas l’intérêt d'avoir à sonner la trompette (c'est une image) à chaque fois que je démarre mon pc, c'est une habitude prise sur tous les OS il me semble. Dans ubuntu 11.10 l'option pour désactiver le son au démarrage a été cachée, je ne vois vraiment pas l’intérêt de faire cela non plus, pour désactiver le son au démarrage :
+
+En root éditer le fichier /usr/share/gnome/autostart/libcanberra-login-sound.desktop : sudo gedit /usr/share/gnome/autostart/libcanberra-login-sound.desktop
+Modifier le champ NoDisplay , passez le à false : NoDisplay=false
+Allez dans le menu "Applications au démarrage..." (sur l’icône en haut à droite)
+Le champ "Gnome login sound" devrait maintenant être visible, vous pouvez le décocher
+
+!Compte principale mal créé, pas de bash auto completion en console
+Pour une raison obscure le compte principale que j'ai créé à l'installation n'avait pas de .profile, ni de .bashrc, et donc l'autocompletion ne fonctionnait pas, par exemple taper en console "sudo apt-get install &lt;tab>" ne me listait pas les paquets pouvant être installé.
+Solutions :
+
+Créer un nouveau compte utilisateur : sudo adduser tempuser
+Copiez ses fichiers .profile et .bashrc : cp /home/tempuser/.bashrc $HOME; cp /home/tempuser/.profile $HOME
+Redémarrer et c'est bon
+Sinon :
+
+Créez manuellement le fichier .profile pour qu'il appelle .bashrc dans le cas d'une session bash
+Créez manuellement le fichier .bashrc pour qu'il appelle /etc/bash_completion
+Ou encore :
+
+Récupérez ces deux fichiers d'une ancienne installation
+Attention ! Si il y a une erreur dans le fichier .profile, vous ne pourrez plus lancer la session graphique, après vous être logué vous serez ramener directement à l'écran de login (il n'y a d'ailleurs aucun message d'erreur, pratique). Dans ce cas passez en console (alt + f1), loguez vous, et corrigez votre fichier .profile
+
+
+!Avoir par défaut la location bar au lieu de la path bar dans nautilus
+L'ancienne astuce ne fonctionne plus, je mettrais à jour mon post si je trouve comment faire, en attendant il faut continuer à utiliser Ctrl+L pour changer de type de barre temporairement.
+
+
+!Créer un desktop launcher
+Je n'ai pas encore trouvé comment faire graphiquement, le clic droit sur le bureau n'offre plus cette solution. Pour l'instant le mieux est de copier un launcher existant, et de le modifier manuellement.
+

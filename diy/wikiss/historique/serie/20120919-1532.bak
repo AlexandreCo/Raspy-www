@@ -1,0 +1,36 @@
+
+// 2012/09/19 15:32 /  217.128.225.12
+!affichage {{stty -a -F /dev/ttyAM0}}
+
+!baudrate (passer en 115200) {{stty 115200 &lt; /dev/ttyAM0
+stty 115200 &lt; /dev/ttyAM1
+stty 115200 &lt; /dev/ttyAM2
+stty 115200 &lt; /dev/ttyTS0}}
+
+stty -a -F /dev/ttyAM1 &lt; /dev/ttyTS0
+
+echo toto > /dev/ttyAM1 && echo toto > /dev/ttyAM2
+
+
+stty 2400 &lt; /dev/ttyTS0
+echo 2400 > /dev/ttyTS0
+while :; do echo 4800 > /dev/ttyTS0; done
+stty 4800 &lt; /dev/ttyTS0
+echo 4800 > /dev/ttyTS0
+while :; do echo 4800 > /dev/ttyTS0; done
+stty 9600 &lt; /dev/ttyTS0
+echo 9600 > /dev/ttyTS0
+while :; do echo 9600 > /dev/ttyTS0; done
+stty 19200 &lt; /dev/ttyTS0
+echo 19200 > /dev/ttyTS0
+while :; do echo 19200 > /dev/ttyTS0; done
+stty 38400 &lt; /dev/ttyTS0
+echo 38400 > /dev/ttyTS0
+while :; do echo 38400 > /dev/ttyTS0; done
+stty 57600 &lt; /dev/ttyTS0
+echo 57600 > /dev/ttyTS0
+while :; do echo 57600 > /dev/ttyTS0; done
+stty 115200 &lt; /dev/ttyTS0
+echo 115200 > /dev/ttyTS0
+while :; do echo 115200 > /dev/ttyTS0; done
+

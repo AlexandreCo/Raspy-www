@@ -1,0 +1,30 @@
+<?php # coding: utf-8
+// Configuration du mot de passe
+	$PASSWORD			=	"password";
+// Paramètres divers
+    $LANG		        =	"fr";
+    $TIME_FORMAT		=	"%Y/%m/%d %R";
+    $LOCAL_HOUR			=	"0";
+	$PAGES_DIR			= 	"pages/";
+	$BACKUP_DIR			=	"historique/"; //historique/
+// Variables de configuration de langues
+    $WIKI_TITLE			=	"WiKiss : le Wiki Kiss";
+    $START_PAGE			=	"Accueil";
+    $HOME_BUTTON		=	"Accueil";
+    $HELP_BUTTON		=	"Aide";
+    $DEFAULT_CONTENT	=	"La page %page% est vide."; //La variable au centre correspond au nom de la page demandée
+    $EDIT_BUTTON		=	"Éditer";
+    $DONE_BUTTON		=	"Enregistrer";
+    $PROTECTED_BUTTON 	=	"Page verrouillée";
+    $SEARCH_BUTTON		=	"Rechercher";
+    $SEARCH_RESULTS		=	"Résultats de recherche pour";
+	$LIST				=	"Liste des pages";
+    $RECENT_CHANGES		=	"Changements récents";
+	$LAST_CHANGES		=	"Dernière modification";
+	$HISTORY_BUTTON		=	"Historique";
+	$NO_HISTORY			=	"Aucun historique existant.";
+	$RESTORE            =   "Restaurer";
+	$MDP                =   "Mot de passe";
+	$ERROR				=	$MDP." spécifié incorrect.";
+	$ERASE_COOKIE       =   "Eff. cookie";
+?>

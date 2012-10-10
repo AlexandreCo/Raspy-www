@@ -1,0 +1,79 @@
+
+// 2012/04/12 12:41 /  217.128.225.12
+!Copier les fichiers a partir d'une playlist mp3 (winamp)
+{{
+#!/bin/bash
+cat ~/Bureau/test.m3u8 | grep -v "#"  > ~/Bureau/test.txt
+dos2unix Bureau/test.txt
+while read ligne  
+do  
+	fichier="/media/OS"$(echo $ligne|sed -e "s/\ /\\ /g");
+	cp "$fichier" /media/SAMSUNG/mp3/
+done &lt; ~/Bureau/test.txt
+}}
+
+Attention le script est incomplet =>  juste une ébauche
+
+!Copier des fichiers (récursif selon un motif)
+* Copie tous les fichiers selon un '''motif''' du dossier '''src''' et ses sous-dossiers vers le dossier '''dst'''
+* Usage cp-motif.sh {src} {dest} {motif}
+* Exemple {{cp-motif.sh ~/src ~/dst mp4$}} copie tous les fichiers terminant par '''mp4''' du dossier '''src''' et ses sous-dossiers vers le dossier '''dst'''
+* Script : {{
+#!/bin/bash
+if [ $# -ne 3 ]
+then
+  echo "Usage: `basename $0` {src} {dst} {motif}"
+  exit $E_BADARGS
+fi
+SRC=$1
+DST=$2
+MOTIF=$3
+
+#pour la boucle for et find (pas de prise en compte des espaces)
+OLD_IFS="$IFS"
+IFS=$'\n'
+
+for i in `find $SRC | grep $MOTIF`
+do
+	#gestion des espaces 
+	fichier=$(echo "$i"|sed -e "s/\ /\\ /g");
+	cp $fichier $DST
+done
+IFS="$OLD_IFS"
+}}
+
+
+
+!Copier / renommer des fichiers des images (récursif)
+* Copie tous les fichiers  jpg du nokia (format MMDDYYYYNUM.jpg) vers le samsung (format YYYY-DD-MM NUM.jpg) du dossier '''src''' et ses sous-dossiers vers le dossier '''dst'''
+* Usage cp-rename-date.sh {src} {dest}
+* Exemple {{cp-rename-date.sh ~/src ~/dst}}
+* Script : {{
+#!/bin/bash
+if [ $# -ne 2 ]
+then
+  echo "Usage: `basename $0` {src} {dst}"
+  exit $E_BADARGS
+fi
+SRC=$1
+DST=$2
+
+
+#pour la boucle for et find (pas de prise en compte des espaces)
+OLD_IFS="$IFS"
+IFS=$'\n'
+
+for i in `find $SRC | grep jpg$`
+do
+	#gestion des espaces 
+	oldName=$(echo "$i"|sed -e "s/\ /\\ /g");
+	filename=`echo $oldName | awk  -F/ {'print $NF'}`
+	#conversion nom de fichier du type "MMDDYYYYNUM.jpg" en "YYYY-DD-MM NUM.jpg"	
+	newfilename=`echo $filename | sed -e "s/^\(..\)\(..\)\(....\)\(.*\)/\3-\1-\2\\ \4/g"`
+	echo "$filename => $newfilename"
+	cp $oldName $DST$newfilename
+done
+IFS="$OLD_IFS"
+}}
+TOC
+

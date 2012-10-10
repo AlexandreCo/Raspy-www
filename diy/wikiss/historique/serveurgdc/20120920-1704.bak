@@ -1,0 +1,95 @@
+
+// 2012/09/20 17:04 /  217.128.225.12
+!Serveur GDC
+!! Matos
+* [raspberry pi|http://www.raspberrypi.org/]
+* [arduino|http://www.arduino.cc/] avec le firmware rf433->serie
+!! Source 
+* projet GDC ([toochain|../../Build/new/], [bsp|https://github.com/AlexandreCo/OSELAS.BSP-fga-Raspberry-2011.11.0/] ...)
+* firmware [arduino|http://www.arduino.cc/], schematique, code sources sur le [launchpad|https://code.launchpad.net/~gnome-sage/+junk/DataCenter]
+!! Idée en vrac
+!!!Capteur
+* capteur niveau du puits
+* capteur vent
+* capteur pluie
+* capteur température : [ThermRf|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/ThermRF/] ,[PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur pression : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur Humiditée : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/]
+
+* ...
+!!!Contacteur
+* chaudière 
+* ...
+
+!!Astuces
+* [ptxdist]
+
+!! conf
+A partir de l'image "raspbian-wheezy-armhf-raspberry-pi-minimal-image": 
+http://www.linuxsystems.it/2012/06/raspbian-wheezy-armhf-raspberry-pi-minimal-image/
+
+!!! Avant 1er boot
+Finally, if you have an sd larger than 2GB, grow the partition with gparted (first move the swap partition at the end).
+{{gparted}}
+
+The root password is raspberry.
+!!! First boot
+{{sudo dpkg-reconfigure tzdata}}
+{{sudo dpkg-reconfigure console-data}}
+{{sudo dpkg-reconfigure locales}}
+{{passwd}}
+
+!!!crontab 
+*Sauvegarde tous les jours 5h00 {{0 5 * * * /home/pi/Documents/scripts/save.sh}}
+*Génération des courbes vigicrue tous les jours 5h15 {{15 5 * * * /home/pi/Documents/scripts/vigicrue/run_vigicrue.sh}}
+!!!packages
+{{sudo apt-get install php5}}
+{{sudo apt-get install gnuplot}}
+TOC
+// 2012/09/20 17:04 /  217.128.225.12
+!Serveur GDC
+!! Matos
+* [raspberry pi|http://www.raspberrypi.org/]
+* [arduino|http://www.arduino.cc/] avec le firmware rf433->serie
+!! Source 
+* projet GDC ([toochain|../../Build/new/], [bsp|https://github.com/AlexandreCo/OSELAS.BSP-fga-Raspberry-2011.11.0/] ...)
+* firmware [arduino|http://www.arduino.cc/], schematique, code sources sur le [launchpad|https://code.launchpad.net/~gnome-sage/+junk/DataCenter]
+!! Idée en vrac
+!!!Capteur
+* capteur niveau du puits
+* capteur vent
+* capteur pluie
+* capteur température : [ThermRf|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/ThermRF/] ,[PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur pression : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/],[PicEpeiche|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicEpeiche/]
+* capteur Humiditée : [PicOlive|http://bazaar.launchpad.net/~gnome-sage/+junk/DataCenter/files/head:/Capteurs/PicOlive/]
+
+* ...
+!!!Contacteur
+* chaudière 
+* ...
+
+!!Astuces
+* [ptxdist]
+
+!! conf
+A partir de l'image "raspbian-wheezy-armhf-raspberry-pi-minimal-image": 
+http://www.linuxsystems.it/2012/06/raspbian-wheezy-armhf-raspberry-pi-minimal-image/
+
+!!! Avant 1er boot
+Finally, if you have an sd larger than 2GB, grow the partition with gparted (first move the swap partition at the end).
+{{gparted}}
+
+The root password is raspberry.
+!!! First boot
+*{{sudo dpkg-reconfigure tzdata}}
+*{{sudo dpkg-reconfigure console-data}}
+*{{sudo dpkg-reconfigure locales}}
+*{{passwd}}
+
+!!!crontab 
+*Sauvegarde tous les jours 5h00 {{0 5 * * * /home/pi/Documents/scripts/save.sh}}
+*Génération des courbes vigicrue tous les jours 5h15 {{15 5 * * * /home/pi/Documents/scripts/vigicrue/run_vigicrue.sh}}
+!!!packages
+*{{sudo apt-get install php5}}
+*{{sudo apt-get install gnuplot}}
+TOC

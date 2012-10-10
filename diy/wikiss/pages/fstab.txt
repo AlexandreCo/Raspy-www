@@ -1,0 +1,3 @@
+!montage freebox 
+nécessite cifs-utils
+{{//mafreebox.freebox.fr/Disque\040dur /media/freebox cifs netdev,guest,directio,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777 0 0}}

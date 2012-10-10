@@ -1,0 +1,5 @@
+*screen
+** Créer un nouveau screen en nommant la session :{{screen -S name}}
+** Connaître les screen existants :{{screen -ls}}
+** Rattacher un screen existant : {{screen -r}}
+** Supprimer un screen mort : {{screen -wipe}}

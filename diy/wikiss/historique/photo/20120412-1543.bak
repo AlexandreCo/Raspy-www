@@ -1,0 +1,14 @@
+
+// 2012/04/12 15:43 /  217.128.225.12
+!Renommer les fichiers par rapport a la date présente dans les exifs
+* commande : {{
+exiftool -d "%Y-%m-%d %H.%M.%S%%-c.%%e" "-filename&lt;CreateDate" .
+}}
+* résultat : 2012-04-12 06.16.04.jpg
+
+
+// 2012/04/12 15:43 /  217.128.225.12
+!Renommer les fichiers par rapport a la date présente dans les exifs
+* commande : {{exiftool -d "%Y-%m-%d %H.%M.%S%%-c.%%e" "-filename&lt;CreateDate" .}}
+* résultat : 2012-04-12 06.16.04.jpg
+

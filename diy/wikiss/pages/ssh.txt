@@ -1,0 +1,22 @@
+!!ssh graphique (Tunneling X)
+ssh -X ^[user_distant]@^[host] {{ssh -X root@192.168.0.46}}
+!!ssh en bois 
+ssh ^[user_distant]@^[host]  
+Exécuter une commande à distance 
+ssh ^[user_distant]@^[host] ^[la commande] 
+{{ssh chafouin@gnome ls -la /terrier/chafouin}}
+!!Copier un fichier vers une autre machine: 
+scp ^[fichier] ^[user_distant]@^[host]:^[path] {{scp enr.tar.bz root@192.168.0.46:/app}}
+!!Copier un répertoire vers une autre machine: 
+scp -r ^[répertoire] ^[user_distant]@^[host]:^[path] {{scp -r repertoire root@192.168.0.46:/terrier/chafouin}}
+!!Le reverse ssh (pour ouvrir la petite porte de derrière)
+* Tous ce qui est en local sur le port 12345 chez toi viens chez moi sur port 22 {{ ssh UserDeChezMoi@ChezMoi -R 12345:localhost:22 }}
+* Je me connecte chez moi sur port 12345 donc je me connect chez toi {{ ssh -p 12345 UserDeChezToi@localhost}}
+!! Connexion sans mot de passe
+*Générer une clef chez le client {{ssh-keygen -t dsa}}
+*Copier la clef sur le serveur ssh {{ssh-copy-id ^[user_distant]@^[host] }}
+!! Proxy sock5 (pour etre connecter directement de chez moi)
+* Console UNIX : {{ssh -p &lt;PortSsh> -D 8080 &lt;User>@&lt;ip>}}
+* Dans le navigateur : proxy SOCKS v5 localhost:8080 
+
+TOC

@@ -1,0 +1,18 @@
+
+// 2012/04/12 15:57 /  217.128.225.12
+!Rechercher/remplacer... Plus fort que Sébastien Mirouf
+le caractère ^[separateur] est déterminé par l'utilisateur (à choisir avec soin, il ne doit pas figurer dans la chaine recherchée ou alors il faut l'échapper) 
+!!Remplacement de chaîne
+*Toutes les occurrences ''cherche'' et les remplacer par ''remplace''{{sed -i"s[separateur]cherche[separateur]remplace[separateur]g" nom_du_fichier}}
+*Toutes les occurrences 123 du fichier et les remplacer par XXX{{sed -i "s/123/XXX/g" test.txt}}
+*Toutes les occurrences 123 de la ligne 5 du fichier et les remplacer par XXX{{sed -i "5s/123/XXX/g" test.txt}}
+*Toutes les 2 eme occurrences 123 de chaque ligne du fichier et les remplacer par XXX{{sed -i "s/123/XXX/2" test.txt}}
+*La 2 eme occurrence 123 de la ligne 5 du fichier et la remplacer par XXX{{sed -i "5s/123/XXX/2" test.txt}}
+!!Suppression de lignes vides
+{{sed -i "/^^$/d" ^[nom_du_fichier]}}
+!!Supprimer toutes les lignes ne comportant pas un motif
+Il ne peut en rester qu'un !
+Supprimera toutes les lignes sauf celles comportant : '''^['''n'importe quoi''']'''n'importequoi'''Record:'''n'importequoi
+{{sed -i "/^^\^[.*\].*Record:.*/!d" ^[nom_du_fichier]}}
+TOC
+

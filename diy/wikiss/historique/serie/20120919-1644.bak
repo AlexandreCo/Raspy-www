@@ -1,0 +1,9 @@
+
+// 2012/09/19 16:44 /  217.128.225.12
+!affichage {{stty -a -F /dev/ttyAM0}}
+
+!baudrate (passer en 115200) {{stty 115200 &lt; /dev/ttyAM0
+stty 115200 &lt; /dev/ttyAM1
+stty 115200 &lt; /dev/ttyAM2
+stty 115200 &lt; /dev/ttyTS0}}
+

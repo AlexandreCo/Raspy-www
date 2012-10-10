@@ -1,0 +1,19 @@
+
+// 2012/03/27 10:23 /  217.128.225.12
+!Serveur GDC
+!! Matos
+* raspberry pi
+* arduino avec le firmware rf433->serie
+!! Source 
+* projet GDC (toochain, bsp ...) : [ici | http://chafouin.no-ip.org:2012/Build/new/]
+* firmware arduino, schematique, code sources sur le [launchpad|https://code.launchpad.net/~gnome-sage/+junk/DataCenter]
+!! Idée en vrac
+!!!Capteur
+* capteur niveau du puits
+* capteur vent
+* capteur pluie
+* ...
+!!!Contacteur
+* chaudière 
+* ...
+
