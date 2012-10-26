@@ -1,3 +1,5 @@
+
+// 2012/10/26 10:07 /  217.128.225.12
 !Serveur GDC
 !! Matos
 * [raspberry pi|http://www.raspberrypi.org/]
@@ -95,27 +97,5 @@ tar -xzvf Documents.tar.gz
 !![Raspy utils]
 */home/pi/Documents/scripts/system/save.sh
 **gestion du backup journalier sur la freebox
-*/home/pi/Documents/scripts/freebox/log_error.sh
-**Log des plantages freebox
-!![Raspy rf2txt]
-*/home/pi/Documents/scripts/rf2txt/archive_rf2txt
-** todo
-*/home/pi/Documents/scripts/rf2txt/rf2txt
-** todo
-*/home/pi/Documents/scripts/rf2txt/meteo.sh
-** todo
-*/home/pi/Documents/scripts/rf2txt/display.sh
-** todo
-*/home/pi/Documents/scripts/rf2txt/meteo_h.sh
-** todo
-*/home/pi/Documents/scripts/rf2txt/reload_rf2txt
-** todo
-!![Raspy vigicrue]
-*/home/pi/Documents/scripts/vigicrue/display_vigicrue.sh
-** todo
-*/home/pi/Documents/scripts/vigicrue/get_vigicrue.sh
-** todo
-*/home/pi/Documents/scripts/vigicrue/run_vigicrue.sh
-** todo
-
 TOC
+

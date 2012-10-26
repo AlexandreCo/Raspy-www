@@ -1,0 +1,30 @@
+
+// 2012/10/26 09:27 /  217.128.225.12
+!Les scripts de gestion de la partie emoncms3
+
+!!Afficher les courbes de l'emoncms3 sur un ecran (hdmi ou svideo) au demarrage
+
+*~/Documents/scripts/X11/custom-session-manager.sh 
+{{
+#!/bin/bash
+unclutter -idle 1 -root &
+URL="http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&units=C&fill=2&feedid=19"
+exec chromium-browser %u --start-maximized --kiosk -incognito "$URL"
+}}
+{{update-alternatives --config x-session-manager}}
+
+
+// 2012/10/26 09:27 /  217.128.225.12
+!Les scripts de gestion de la partie emoncms3
+
+!!Afficher les courbes de l'emoncms3 sur un ecran (hdmi ou svideo) au demarrage
+
+*~/Documents/scripts/X11/custom-session-manager.sh 
+{{
+#!/bin/bash
+unclutter -idle 1 -root &
+URL="http://127.0.0.1/test.php"
+exec chromium-browser %u --start-maximized --kiosk -incognito "$URL"
+}}
+{{update-alternatives --config x-session-manager}}
+

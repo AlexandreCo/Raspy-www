@@ -1,0 +1,38 @@
+!Les scripts systemes
+!! gestion du backup
+* /home/pi/Documents/scripts/system/save.sh
+{{#!/bin/bash
+DATE_START=`date "+%D %X"`
+/usr/bin/rsync -az /var/www /media/freebox/Sauvegarde/Rpy/var/
+/usr/bin/rsync -az /home/pi/Documents /media/freebox/Sauvegarde/Rpy/home/pi/
+DATE_STOP=`date "+%D %X"`
+echo "Start=$DATE_START stop=$DATE_STOP" >> /home/pi/Documents/logs/rsync.log
+}}
+* Dans la crontab user
+{{30 6 * * * /home/pi/Documents/scripts/system/save.sh}}
+
+!!Log  des plantages freebox
+{{
+#!/bin/bash
+LOG_FILE=/home/pi/Documents/logs/ping
+STATE=`cat $LOG_FILE`
+if ! ping -c 1 www.google.fr >/dev/null
+then 
+	echo "ko=$STATE"
+	if [ "$STATE" != "ko" ]
+	then
+		echo "ko" > $LOG_FILE
+		wget "http://127.0.0.1/emoncms3/emoncms3/api/post?apikey=be257fcfd02cf344e99ef6a4fcad9c7b&node=666&json={ping:0}"  -qO - >/dev/null
+	fi
+else
+	echo "ok=$STATE"
+        if [ "$STATE" != "ok" ]
+	then    
+		echo "ok" > $LOG_FILE
+		wget "http://127.0.0.1/emoncms3/emoncms3/api/post?apikey=be257fcfd02cf344e99ef6a4fcad9c7b&node=666&json={ping:1}"  -qO - >/dev/null
+	fi      
+fi
+
+}}
+* Dans la crontab user
+{{*/5 * * * * /home/pi/Documents/scripts/freebox/log_error.sh}}

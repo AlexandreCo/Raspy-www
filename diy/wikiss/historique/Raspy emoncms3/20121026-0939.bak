@@ -1,0 +1,213 @@
+
+// 2012/10/26 09:39 /  217.128.225.12
+!Les scripts de gestion de la partie emoncms3
+
+!!Afficher les courbes de l'emoncms3 sur un ecran (hdmi ou svideo) au demarrage
+
+!!! Install Chromium:
+{{apt-get install chromium-browser}}
+!!! Install unclutter (hide mouse)
+{{apt-get install unclutter}}
+!!!config Chromium :
+{{mkdir -p /root/.config/chromium
+cd /root/.config/chromium
+touch First\ Run
+nano Local\ State}}
+
+
+
+!!! les fichiers
+*/root/.config/chromium/Local\ State
+{{
+{
+   "": "",
+   "browser": {
+      "last_known_google_url": "http://www.google.com/",
+      "window_placement": {
+         "bottom": 1050,
+         "left": 0,
+         "maximized": true,
+         "right": 1680,
+         "top": 0
+      }
+   }
+}
+}}
+*/usr/bin/custom-session-manager.sh
+{{
+#!/bin/bash
+unclutter -idle 1 -root &
+URL="http://127.0.0.1/test.html"
+exec chromium-browser %u --start-maximized --kiosk -incognito "$URL"
+}}
+{{update-alternatives --config x-session-manager}}
+
+*/var/www/test.html
+{{&lt;html>
+&lt;head>
+&lt;SCRIPT language="JavaScript" type="text/JavaScript">
+var urls=new Array(
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=16&fill=2&units=%",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=13&fill=2&units=hPa",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&units=C&fill=2&feedid=19",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=15&fill=2&units=c&steps="
+);
+var i=0;
+function change()
+{
+	emoncs.location = urls[i];
+	i++;
+	if(i>3)
+	{
+		i=0;
+	}
+	setTimeout("change()", 30000);// Toutes les 5 secondes
+}
+&lt;/SCRIPT>
+
+
+&lt;/head>
+&lt;body onLoad="change()">
+&lt;IFRAME id="emoncs" name="emoncs" frameborder = "0" align = "right" scrolling="no" height= "420" width= "660" src="http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=16&fill=2&units=%">&lt;/IFRAME>
+&lt;/body>
+}}
+
+* /etc/init.d/custom-x-startup.sh
+{{#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:        custom-x-startup
+# Required-Start:  $network $syslog $all
+# Required-Stop:
+# Default-Start:   2 3 4 5
+# Default-Stop:
+# Short-Description: Boot into X
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+. /lib/lsb/init-functions
+
+test -x /usr/bin/startx || exit 5
+
+case "$1" in
+    start)
+        log_daemon_msg "Starting X" "custom-x-startup"
+        /bin/su - pi --command /usr/bin/startx
+        ;;
+    *)
+        echo "Usage: {start}"
+        exit 2
+        ;;
+esac
+}}
+
+!sources :
+http://next.kolumbus.no/2012/06/22/raspberry-pi/
+
+
+// 2012/10/26 09:39 /  217.128.225.12
+!Les scripts de gestion de la partie emoncms3
+
+!!Afficher les courbes de l'emoncms3 sur un ecran (hdmi ou svideo) au demarrage
+
+!!! Install Chromium:
+{{apt-get install chromium-browser}}
+!!! Install unclutter (hide mouse)
+{{apt-get install unclutter}}
+!!!config Chromium :
+{{mkdir -p /root/.config/chromium
+cd /root/.config/chromium
+touch First\ Run
+nano Local\ State}}
+
+
+
+!!! les fichiers
+*/root/.config/chromium/Local\ State
+{{
+{
+   "": "",
+   "browser": {
+      "last_known_google_url": "http://www.google.com/",
+      "window_placement": {
+         "bottom": 1050,
+         "left": 0,
+         "maximized": true,
+         "right": 1680,
+         "top": 0
+      }
+   }
+}
+}}
+*/usr/bin/custom-session-manager.sh
+{{
+#!/bin/bash
+unclutter -idle 1 -root &
+URL="http://127.0.0.1/test.html"
+exec chromium-browser %u --start-maximized --kiosk -incognito "$URL"
+}}
+
+*/var/www/test.html
+{{&lt;html>
+&lt;head>
+&lt;SCRIPT language="JavaScript" type="text/JavaScript">
+var urls=new Array(
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=16&fill=2&units=%",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=13&fill=2&units=hPa",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&units=C&fill=2&feedid=19",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=15&fill=2&units=c&steps="
+);
+var i=0;
+function change()
+{
+	emoncs.location = urls[i];
+	i++;
+	if(i>3)
+	{
+		i=0;
+	}
+	setTimeout("change()", 30000);// Toutes les 5 secondes
+}
+&lt;/SCRIPT>
+
+
+&lt;/head>
+&lt;body onLoad="change()">
+&lt;IFRAME id="emoncs" name="emoncs" frameborder = "0" align = "right" scrolling="no" height= "420" width= "660" src="http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=16&fill=2&units=%">&lt;/IFRAME>
+&lt;/body>
+}}
+
+* /etc/init.d/custom-x-startup.sh
+{{#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:        custom-x-startup
+# Required-Start:  $network $syslog $all
+# Required-Stop:
+# Default-Start:   2 3 4 5
+# Default-Stop:
+# Short-Description: Boot into X
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+. /lib/lsb/init-functions
+
+test -x /usr/bin/startx || exit 5
+
+case "$1" in
+    start)
+        log_daemon_msg "Starting X" "custom-x-startup"
+        /bin/su - pi --command /usr/bin/startx
+        ;;
+    *)
+        echo "Usage: {start}"
+        exit 2
+        ;;
+esac
+}}
+
+!sources :
+http://next.kolumbus.no/2012/06/22/raspberry-pi/
+

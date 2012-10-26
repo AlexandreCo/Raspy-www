@@ -1,3 +1,5 @@
+
+// 2012/10/26 09:46 /  217.128.225.12
 !Serveur GDC
 !! Matos
 * [raspberry pi|http://www.raspberrypi.org/]
@@ -85,37 +87,11 @@ tar -xzvf Documents.tar.gz
 }}
 
 !Scripts
-!![Raspy emoncms3]
-*Scripts de gestion de la partie emoncms3
-**Afficher les courbes de l'emoncms3 sur un ecran (hdmi ou svideo) au démarrage
+!![Raspy emoncms3] sur le display
 
 !![Raspy check lan]
 */home/pi/Documents/scripts/lan/check_lan.sh  
-**Pour le bug smsc95xx 1-1.1:1.0: eth0: Failed to write register index 0x00000014
-!![Raspy utils]
-*/home/pi/Documents/scripts/system/save.sh
-**gestion du backup journalier sur la freebox
-*/home/pi/Documents/scripts/freebox/log_error.sh
-**Log des plantages freebox
-!![Raspy rf2txt]
-*/home/pi/Documents/scripts/rf2txt/archive_rf2txt
-** todo
-*/home/pi/Documents/scripts/rf2txt/rf2txt
-** todo
-*/home/pi/Documents/scripts/rf2txt/meteo.sh
-** todo
-*/home/pi/Documents/scripts/rf2txt/display.sh
-** todo
-*/home/pi/Documents/scripts/rf2txt/meteo_h.sh
-** todo
-*/home/pi/Documents/scripts/rf2txt/reload_rf2txt
-** todo
-!![Raspy vigicrue]
-*/home/pi/Documents/scripts/vigicrue/display_vigicrue.sh
-** todo
-*/home/pi/Documents/scripts/vigicrue/get_vigicrue.sh
-** todo
-*/home/pi/Documents/scripts/vigicrue/run_vigicrue.sh
-** todo
+*Pour le bug smsc95xx 1-1.1:1.0: eth0: Failed to write register index 0x00000014
 
 TOC
+

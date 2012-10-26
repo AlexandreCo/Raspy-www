@@ -1,0 +1,27 @@
+<html>
+<head>
+<SCRIPT language="JavaScript" type="text/JavaScript">
+var urls=new Array(
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=16&fill=2&units=%",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=13&fill=2&units=hPa",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&units=C&fill=2&feedid=19",
+"http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=15&fill=2&units=c&steps="
+);
+var i=0;
+function change()
+{
+	emoncs.location = urls[i];
+	i++;
+	if(i>3)
+	{
+		i=0;
+	}
+	setTimeout("change()", 30000);// Toutes les 5 secondes
+}
+</SCRIPT>
+
+
+</head>
+<body onLoad="change()">
+<IFRAME id="emoncs" name="emoncs" frameborder = "0" align = "right" scrolling="no" height= "420" width= "660" src="http://127.0.0.1/emoncms3/emoncms3/vis/rawdata?apikey=707b1b61308fa29f51b89d698b280219&embed=1&feedid=16&fill=2&units=%"></IFRAME>
+</body>
