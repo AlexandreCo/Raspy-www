@@ -1,3 +1,5 @@
+
+// 2012/11/09 12:08 /  217.128.225.12
 !Serveur GDC
 !! Matos
 * [raspberry pi|http://www.raspberrypi.org/]
@@ -43,7 +45,6 @@ The pi password is raspberry.
 *test connection freebox toutes les 5 mins {{*/5 * * * * /home/pi/Documents/scripts/freebox/log_error.sh}}
 !!!!root
 *Test de la connection (pour le bug smsc95xx 1-1.1:1.0: eth0: Failed to write register index 0x00000014) {{*/10 * * * *    /home/pi/Documents/scripts/lan/check_lan.sh}}
-*iptables {{@reboot		/sbin/iptables-restore &lt; /etc/network/iptables}}
 !!!fstab
 {{proc            /proc           proc    defaults          0       0
 /dev/mmcblk0p1  /boot           vfat    defaults          0       2
@@ -118,11 +119,6 @@ tar -xzvf Documents.tar.gz
 ** todo
 */home/pi/Documents/scripts/vigicrue/run_vigicrue.sh
 ** todo
-!![iptables]
-* iptables au demarrage
-**Creer un lien symbolique entre Documents/scripts/lan/iptables et /etc/network/iptables
-**Ajouter {{pre-up iptables-restore &lt; /etc/network/iptables}} a la fin de /etc/network/interfaces
-* pour ajouter des regles {{sudo bash -c 'iptables-save > /etc/network/iptables'}}
 
-{{dmesg | grep -v "192.168.0.254" | grep "SRC=" | awk {'print $6'}| sort | uniq}}
 TOC
+

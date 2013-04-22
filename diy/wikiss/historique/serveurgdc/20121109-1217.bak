@@ -1,3 +1,5 @@
+
+// 2012/11/09 12:17 /  217.128.225.12
 !Serveur GDC
 !! Matos
 * [raspberry pi|http://www.raspberrypi.org/]
@@ -123,6 +125,5 @@ tar -xzvf Documents.tar.gz
 **Creer un lien symbolique entre Documents/scripts/lan/iptables et /etc/network/iptables
 **Ajouter {{pre-up iptables-restore &lt; /etc/network/iptables}} a la fin de /etc/network/interfaces
 * pour ajouter des regles {{sudo bash -c 'iptables-save > /etc/network/iptables'}}
-
-{{dmesg | grep -v "192.168.0.254" | grep "SRC=" | awk {'print $6'}| sort | uniq}}
 TOC
+

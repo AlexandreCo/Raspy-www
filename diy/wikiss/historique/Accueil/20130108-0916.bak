@@ -1,3 +1,5 @@
+
+// 2013/01/08 09:16 /  2.1.101.85
 !My Fab Lab...
 !!...ce wiki... presente mes projets, astuces ou idée en cours. 
 [Toutes les pages|?action=search]
@@ -25,15 +27,13 @@
 ** [precise pangolin]
 * Utilitaires
 ** [vi]
-** [eclispe]
 **[screen]
 * Dev
 ** [ptxdist]
-**[langage c]
 !!!infos diverses : 
 Crues de référence Sarthe Le Mans [Yssoir] : janvier 2004 - 2.27 m
 Crues de référence Sarthe Le Mans [Pontlieue|?page=Yssoir] : janvier 2001 - 1.9 m
-
+!!!! Dev
 
 !!!doc
 Ce wiki est utilise le projet [WiKiss|http://wikiss.tuxfamily.org/].
@@ -43,3 +43,4 @@ Quelques liens pour faciliter l'edition
 * les détails sur la [configuration|http://wikiss.tuxfamily.org/?page=Configuration].
 * la [liste de diffusion|http://wikiss.tuxfamily.org/?page=Listes]
 TOC
+

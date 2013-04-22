@@ -1,3 +1,5 @@
+
+// 2013/01/09 17:50 /  2.8.170.88
 *screen
 ** Créer un nouveau screen en nommant la session :{{screen -S name}}
 ** Connaître les screen existants :{{screen -ls}}
@@ -5,4 +7,4 @@
 ** Supprimer un screen mort : {{screen -wipe}}
 ** Quitter le programme screen{{Ctrl-A k y}}(ie. passage en mode commande ; kill ; yes)
 ** revenir a la console sans quitter le programme screen{{Ctrl-A d}}(ie. passage en mode commande ; detach)
-** remonter dans le screen{{Ctrl-A [}}
+

@@ -1,0 +1,6 @@
+* Installation d'un ide pour msp430 sous linux
+
+** installation des outils{{sudo apt-get install msp430mcu msp430-libc gcc-msp430 gdb-msp430 mspdebug eclipse-cdt}}
+
+** installation du plugin eclipse
+*** dans Eclipse menu install new software ajouter et installer http://eclipse.xpg.dk

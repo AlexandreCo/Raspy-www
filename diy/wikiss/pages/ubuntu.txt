@@ -1,0 +1,7 @@
+!Les paquets
+{{sudo apt-get install arduino meld filezila eclipse-cdt fail2ban virtualbox-ose }}
+{{sudo apt-get install gimp flashplugin-installer git}}
+
+!font pour Anne-Laure
+* font crayonl
+http://fr.fonts2u.com/crayonl.police

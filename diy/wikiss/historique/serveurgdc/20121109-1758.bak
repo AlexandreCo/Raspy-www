@@ -1,3 +1,5 @@
+
+// 2012/11/09 17:58 /  217.128.225.12
 !Serveur GDC
 !! Matos
 * [raspberry pi|http://www.raspberrypi.org/]
@@ -126,3 +128,4 @@ tar -xzvf Documents.tar.gz
 
 {{dmesg | grep -v "192.168.0.254" | grep "SRC=" | awk {'print $6'}| sort | uniq}}
 TOC
+

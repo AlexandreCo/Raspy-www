@@ -1,59 +1,59 @@
 <rss version="0.91">
 <channel>
 <title>WiKiss : le Wiki Kiss</title>
-<link>http://chafouin.no-ip.org/diy/wikiss/index.php</link>
+<link>http://192.168.0.14/diy/wikiss/index.php</link>
 <description>Flux RSS de WiKiss : le Wiki Kiss</description>
 <language>fr</language>
 <item>
-            <title>serveurgdc</title>
-            <pubDate>Wed, 10 Oct 2012 16:52:37 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=serveurgdc</link>
-            <description>serveurgdc 2012/10/10 16:52</description>
-            </item><item>
-            <title>screen</title>
-            <pubDate>Tue, 09 Oct 2012 18:08:22 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=screen</link>
-            <description>screen 2012/10/09 18:08</description>
+            <title>eclispe</title>
+            <pubDate>Fri, 19 Apr 2013 11:56:29 +0200</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=eclispe</link>
+            <description>eclispe 2013/04/19 11:56</description>
             </item><item>
             <title>Accueil</title>
-            <pubDate>Tue, 09 Oct 2012 18:06:55 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=Accueil</link>
-            <description>Accueil 2012/10/09 18:06</description>
+            <pubDate>Fri, 19 Apr 2013 11:54:17 +0200</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=Accueil</link>
+            <description>Accueil 2013/04/19 11:54</description>
+            </item><item>
+            <title>screen</title>
+            <pubDate>Thu, 24 Jan 2013 11:15:25 +0100</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=screen</link>
+            <description>screen 2013/01/24 11:15</description>
+            </item><item>
+            <title>langage c</title>
+            <pubDate>Tue, 08 Jan 2013 09:18:16 +0100</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=langage+c</link>
+            <description>langage c 2013/01/08 09:18</description>
+            </item><item>
+            <title>serveurgdc</title>
+            <pubDate>Fri, 09 Nov 2012 17:58:38 +0100</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=serveurgdc</link>
+            <description>serveurgdc 2012/11/09 17:58</description>
+            </item><item>
+            <title>ubuntu</title>
+            <pubDate>Sun, 28 Oct 2012 10:08:20 +0100</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=ubuntu</link>
+            <description>ubuntu 2012/10/28 10:08</description>
+            </item><item>
+            <title>Raspy check lan</title>
+            <pubDate>Fri, 26 Oct 2012 10:15:40 +0200</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=Raspy+check+lan</link>
+            <description>Raspy check lan 2012/10/26 10:15</description>
+            </item><item>
+            <title>Raspy utils</title>
+            <pubDate>Fri, 26 Oct 2012 10:12:14 +0200</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=Raspy+utils</link>
+            <description>Raspy utils 2012/10/26 10:12</description>
+            </item><item>
+            <title>Raspy emoncms3</title>
+            <pubDate>Fri, 26 Oct 2012 09:44:22 +0200</pubDate>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=Raspy+emoncms3</link>
+            <description>Raspy emoncms3 2012/10/26 09:44</description>
             </item><item>
             <title>solaire</title>
             <pubDate>Wed, 03 Oct 2012 15:15:05 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=solaire</link>
+            <link>http://192.168.0.14/diy/wikiss/index.php?page=solaire</link>
             <description>solaire 2012/10/03 15:15</description>
-            </item><item>
-            <title>vi</title>
-            <pubDate>Tue, 25 Sep 2012 15:03:45 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=vi</link>
-            <description>vi 2012/09/25 15:03</description>
-            </item><item>
-            <title>timelaps</title>
-            <pubDate>Thu, 20 Sep 2012 22:12:17 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=timelaps</link>
-            <description>timelaps 2012/09/20 22:12</description>
-            </item><item>
-            <title>vent</title>
-            <pubDate>Thu, 20 Sep 2012 22:12:17 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=vent</link>
-            <description>vent 2012/09/20 22:12</description>
-            </item><item>
-            <title>test</title>
-            <pubDate>Thu, 20 Sep 2012 22:12:16 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=test</link>
-            <description>test 2012/09/20 22:12</description>
-            </item><item>
-            <title>ssh</title>
-            <pubDate>Thu, 20 Sep 2012 22:12:15 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=ssh</link>
-            <description>ssh 2012/09/20 22:12</description>
-            </item><item>
-            <title>serie</title>
-            <pubDate>Thu, 20 Sep 2012 22:12:13 +0200</pubDate>
-            <link>http://chafouin.no-ip.org/diy/wikiss/index.php?page=serie</link>
-            <description>serie 2012/09/20 22:12</description>
             </item>
 </channel>
 </rss>

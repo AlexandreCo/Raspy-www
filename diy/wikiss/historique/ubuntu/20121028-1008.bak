@@ -1,0 +1,10 @@
+
+// 2012/10/28 10:08 /  192.168.0.254
+!Les paquets
+{{sudo apt-get install arduino meld filezila eclipse-cdt fail2ban virtualbox-ose }}
+{{sudo apt-get install gimp flashplugin-installer git}}
+
+!font pour Anne-Laure
+* font crayonl
+http://fr.fonts2u.com/crayonl.police
+

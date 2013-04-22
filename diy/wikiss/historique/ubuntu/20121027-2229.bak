@@ -1,0 +1,13 @@
+
+// 2012/10/27 22:29 /  192.168.0.254
+liste des paquets : 
+* arduino 
+* font crayonl
+* virtual-box
+* chrome
+* filezila
+* eclipse
+* meld
+
+{{sudo apt-get install arduino meld filezila eclipse-cdt fail2ban}}
+
