@@ -19,27 +19,28 @@ On peut aussi faire de la mise-en-forme de cellule. Il faut pour cela indiquer q
 ** r : alignement horizontal à droite
 * deux chiffres peuvent être ajoutés pour connecter les cellules :
 ** le premier indique combien de colonnes doivent être connectées
-** le second placé après une virgule connecte les lignes
+** une virgule obligatoire sépare le 1er d'un éventuel deuxième ou du reste de la cellule
+** le second connecte les lignes
 
 {{
 |hl Titre gauche|hr Titre droite|
 |r droite       |l    gauche    |
-|2 Deux colonnes                |
+|2, 2 colonnes                |
 |t ,2 Deux lignes| A |
-                 | B |
+                 | 1 |
 |,2 Deux lignes  | C |
                  | D |}}
 
 |hl Titre gauche|hr Titre droite|
 |r droite       |l    gauche    |
-|2 Deux colonnes                |
+|2, 2 colonnes                |
 |t ,2 Deux lignes| A |
-                 | B |
+                 | 1 |
 |,2 Deux lignes  | C |
                  | D |
 
 !! Inclusion dans une table
-|h 3 Syntaxe supportée|
+|h 3, Syntaxe supportée|
 |ht ,7 Mise en forme | ^''italique^'' | ''italique'' |
                      |  '^''gras'^''  |  '''gras'''  |
                      |'^'^'^''gras italique'^'^'^''|'''''gras italique'''''|
@@ -54,9 +55,8 @@ On peut aussi faire de la mise-en-forme de cellule. Il faut pour cela indiquer q
     |^[/logo_100.png^|^http://wikiss.tuxfamily.org/]|[http://wikiss.tuxfamily.org/img/logo_100.png|http://wikiss.tuxfamily.org/]|
     |^[^http://wikiss.tuxfamily.org/img/logo_100.png^|right] | [http://wikiss.tuxfamily.org/img/logo_100.png|right]|
     |^[/logo_100.png^|^http://wikiss.tuxfamily.org/^|left] | [http://wikiss.tuxfamily.org/img/logo_100.png|http://wikiss.tuxfamily.org/|left]|
-
-
-|h 2 Syntaxe non supportée|
+%%
+|h 2, Syntaxe non supportée|
 |Titres    | !! Titre|
 |,2 Listes | * non ordonnée |
            | # ordonnée |

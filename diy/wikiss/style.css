@@ -11,9 +11,14 @@ table.wikitable td {
   padding: 2px;
 }
 
-table.wikitable td.em {
-  background: #ccc;
+table.wikitable th {
+  border: 1px solid #ccc;
+  text-align: center;
+  vertical-align: middle;
+  padding: 2px;
+  background: #eee;
   font-weight: bold;
+  color: black;
 } 
 
 /* Table Of Content */
@@ -169,4 +174,27 @@ font-weight: bold;
 
 form {
 display: inline
+}
+
+/* wkp_Menu */
+/* Table Of Content */
+#menu {
+   border: 1px dashed white;
+   float:right;
+   padding: .5em;
+   background: #333C4D;
+   color: white;
+   font-weight:bold;   
+}
+
+#menu ul {
+   list-style: none;
+   margin:0;
+   padding:0;
+   
+}
+
+#menu a {
+   color: white;
+
 }

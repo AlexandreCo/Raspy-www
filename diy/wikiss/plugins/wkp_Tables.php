@@ -6,14 +6,14 @@
  */
 class Tables
 {
-   public $description = "Syntaxe de tables";
+   function __toString()
+   {
+      return _('Add a syntax for tables');
+   }
    
    function table_style($s)
    {
       $r = ''; $st = '';
-
-      if (strpos($s, 'h') !== false)
-       $r .= ' class="em"';
 
       if (strpos($s, 'l') !== false)
        $st .= 'text-align: left; ';
@@ -44,10 +44,11 @@ class Tables
       $s = preg_replace('/^\s*\|(.*)\|\s*$/m', '<tr>$1</tr>', $s);
       $s = str_replace("\n","",$s);
 
-      // Creation des <td></td> en se servant des |
-      $s = preg_replace('/\|(([hlrtb]* ){0,1})\s*(\d*)\s*,{0,1}(\d*)\s*(.*?)\|/e',
-         '"<td".("$3"?" colspan=\"$3\"":" ").("$4"?" rowspan=\"$4\"":" ").$this->table_style("$1").">$5</td>"',$s);
-       
+      // Creation des <th></th> et des <td></td> en se servant des |
+      $s=preg_replace('/\|(h){0,1}(([lrtb]* ){0,1})(\s*(\d*)\s*,(\d*)\s*){0,1}(.*?)\|/e',
+         '"<t".("$1"?"h":"d").("$5"?" colspan=\"$5\"":" ").("$6"?" rowspan=\"$6\"":" ").$this->table_style("$2").">$7</t".("$1"?"h":"d").">"',$s);
+
+
       if ($nblinks> 0)
          $s = preg_replace_callback(array_fill(0,$nblinks,"/\[LINK\]/"),
             create_function('$m',

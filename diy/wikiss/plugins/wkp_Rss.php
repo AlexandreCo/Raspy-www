@@ -1,17 +1,21 @@
 <?php # coding: utf-8
 
-/* Code basé sur ModuleRss.php de TigerWiki
+/* Based on ModuleRss.php from TigerWiki
  ******
- * Génération d'un flux rss des 10 dernières modifications
- * lorsque on écrit une page.
- * Fichier généré: rss.xml à la racine du wiki.
- * Ajoutez {RSS} dans entre les tags <head></head> du template.html
- * pour que vos visiteurs découvrent le flux.
+ * Creation of a RSS feed with $RECENT_NUMBER last modified pages
+ * each time a page is modified.
+ * Created file: rss_XX.xml in the wiki root. XX=$LANG
+ * Add {RSS} between <head></head> in template.html
+ * This will allow the feed to be discovered.
+ * The number of entries is the same as for 'recent' ($RECENT_NUMBER)
  */
 
 class Rss
 {
-   public $description = "Génération d'un flux Rss des derniers changements";
+   function __toString()
+   {
+      return tr('Create RSS feed of last changes');
+   }
 
    const template = '<rss version="0.91">
 <channel>
@@ -25,10 +29,11 @@ class Rss
 
    function writedPage ($file)
    {
-      global $WIKI_TITLE,$PAGES_DIR,$LANG,$TIME_FORMAT;
+      global $WIKI_TITLE,$PAGES_DIR,$LANG,$TIME_FORMAT,$RECENT_NUMBER;
+      $CONTENT_RSS = "";
    
-      // Attention, bug si https ou port différent de 80 ?
-      $ADR_ACCUEIL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"];
+      // TODO: bug if https
+      $ADR_ACCUEIL = "http://".$_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"].$_SERVER["SCRIPT_NAME"];
       
       $rss = str_replace('{WIKI_TITLE}', $WIKI_TITLE, self::template);
       $rss = str_replace('{ADR_ACCUEIL}', $ADR_ACCUEIL , $rss);
@@ -40,7 +45,7 @@ class Rss
          if (preg_match("/\.txt$/", $file))
             $filetime[$file] = filemtime($PAGES_DIR . $file);
       arsort($filetime);
-      $filetime = array_slice($filetime, 0, 10);
+      $filetime = array_slice($filetime, 0, $RECENT_NUMBER);
       foreach ($filetime as $filename => $timestamp)
       {
          $filename = substr($filename, 0, strlen($filename) - 4);
@@ -48,22 +53,22 @@ class Rss
          $CONTENT_RSS .= "<item>
             <title>$filename</title>
             <pubDate>". date("r", $timestamp)."</pubDate>
-            <link>$ADR_ACCUEIL?page=".urlencode("$filename")."</link>
+            <link>$ADR_ACCUEIL?page=".urlencode("$filename")."&amp;lang=$LANG</link>
             <description>$filename " . strftime("$TIME_FORMAT", $timestamp) . "</description>
             </item>";
       }
       $rss = str_replace("{CONTENT_RSS}", $CONTENT_RSS, $rss); 
       //Write RSS             
-      if (! $file = fopen("rss.xml", "w"))
-         die ("Enregistrement du RSS impossible !");
+      if (! $file = fopen("rss_$LANG.xml", "w"))
+         die (tr('Cannot create RSS feed'));
       fputs($file, $rss);
       fclose($file);    
    }
    
    function template()
    {
-      global $html;
-      $html = str_replace('{RSS}','<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml" />',$html);
+      global $html,$LANG;
+      $html = str_replace('{RSS}','<link rel="alternate" type="application/rss+xml" title="RSS" href="rss_'.$LANG.'.xml" />',$html);
       return FALSE;
    }
 }
