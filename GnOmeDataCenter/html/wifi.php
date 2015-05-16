@@ -11,14 +11,14 @@ $cmd = $_GET['wifi'];
 <?php
 	if ($cmd == "on")
 	{
-        	exec("wifi.sh on");
+        	exec("wifion");
 	}
 	if ($cmd == "off")
 	{
-	        echo exec("wifi.sh off");
+	        echo exec("wifioff");
 	}
 
-	echo exec("wifi.sh status");
+	echo exec("wifistatus");
 ?>
         </body>
 </html>

@@ -22,7 +22,7 @@ $filename .= "_data.txt";
 if ($fp = fopen("../log_brut/$filename","r"))
 {
 	echo "<br><br><H3>Donn&eacute;es capteurs du $date:<br>";
-	echo "<table border=1><tr><td>Capteur</td><td>Date</td><td>Heure(GMT)</td><td>Temp&eacute;rature 1</td><td>Pression</td><td>Humidit&eacute;</td><td>Temp&eacute;rature 2</td><td>Batterie</td></tr>";
+	echo "<table border=1><tr><td>Capteur</td><td>Date</td><td>Heure(GMT)</td><td>Temp&eacute;rature 1</td><td>Pression</td><td>Humidit&eacute;</td><td>Temp&eacute;rature 2</td><td>Batterie</td><td>Rain</td></tr>";
 	
 	while (!feof($fp)) 
 	{ 
