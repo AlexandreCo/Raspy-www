@@ -1,28 +1,146 @@
-<HTML>
-<HEAD>
-</HEAD>
-<body bgcolor=black text=white link=blue vlink=yellow> 
-
-
 <?php
 
 function get_val ( $date )
 {
 	return $_GET[$date];
 }
-$date = get_val('date');
-if($date=='')
+$arg_date = get_val('date');
+if($arg_date=='')
 {
-        $date=date("Y-m-d");
+        $arg_date=date("Y-m-d");
 }
-
-
-$filename = $date;
+$filename = $arg_date;
 $filename .= "_data.txt";
-if ($fp = fopen("../log_brut/$filename","r"))
+?>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<style type="text/css">
+${demo.css}
+		</style>
+		<script type="text/javascript">
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            zoomType: 'x'
+        },
+        title: {
+            text: 'Temperature'
+        },
+        subtitle: {
+            text: 'jardin'
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                month: '%e. %b',
+                year: '%b'
+            },
+            title: {
+                text: 'Date'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature (°C)'
+            },
+            min: 0
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x:%e. %b}: {point.y:.2f} °C'
+        },
+
+        plotOptions: {
+            spline: {
+                marker: {
+                    enabled: true
+                }
+            }
+        },
+
+        series: [{
+            name: 'Terrasse',
+	    
+            data: [
+<?php
+if ($fp = fopen("/var/www/GnOmeDataCenter/log_brut/$filename","r"))
 {
-	echo "<br><br><H3>Donn&eacute;es capteurs du $date:<br>";
-	echo "<table border=1><tr><td>Capteur</td><td>Date</td><td>Heure(GMT)</td><td>Temp&eacute;rature 1</td><td>Pression</td><td>Humidit&eacute;</td><td>Temp&eacute;rature 2</td><td>Batterie</td><td>Rain</td></tr>";
+	while (!feof($fp)) 
+	{ 
+		$line = fgets($fp, 255);
+		$array = explode ( ";" , $line );
+		switch($array[0])
+		{
+                        case 198:
+				$hour = explode ( ":" , $array[2] );
+				$date = explode ( "-" , $array[1] );
+                        	echo ("[ Date.UTC($date[0],$date[1]-1,$date[2],$hour[0],$hour[1],$hour[2]), $array[3]   ],\n");
+                        break;
+			
+			default:
+			break;
+		}
+	}
+	fclose($fp);
+}
+else
+{
+	echo ("[ $array[2], $array[3]   ],");
+}
+?>
+            ]
+        }, {
+            name: 'Jardin à l\'ombre',
+	    color: '#00FF00',
+            data: [
+<?php
+if ($fp = fopen("/var/www/GnOmeDataCenter/log_brut/$filename","r"))
+{
+	while (!feof($fp)) 
+	{ 
+		$line = fgets($fp, 255);
+		$array = explode ( ";" , $line );
+		switch($array[0])
+		{
+                        case 111:
+                             	$hour = explode ( ":" , $array[2] );
+				$date = explode ( "-" , $array[1] );
+                        	echo ("[ Date.UTC($date[0],$date[1]-1,$date[2],$hour[0],$hour[1],$hour[2]), $array[3]   ],\n");
+                        break;
+			
+			default:
+			break;
+		}
+	}
+	fclose($fp);
+}
+else
+{
+	echo ("[ $array[2], $array[3]   ],");
+}
+?>
+            ]
+        }]
+    });
+});
+		</script>
+	</head>
+	<body bgcolor=black text=white link=blue vlink=yellow>
+<script src="/highcharts/js/highcharts.js"></script>
+<script src="/highcharts/js/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<?php
+if ($fp = fopen("/var/www/GnOmeDataCenter/log_brut/$filename","r"))
+{
+	echo "<br><br><center><H3>Donn&eacute;es capteurs du $arg_date:<br>";
+	echo "<center><table border=1><tr><td>Capteur</td><td>Date</td><td>Heure(GMT)</td><td>Temp&eacute;rature 1</td><td>Pression</td><td>Humidit&eacute;</td><td>Temp&eacute;rature 2</td><td>Batterie</td><td>Rain</td></tr>";
 	
 	while (!feof($fp)) 
 	{ 
@@ -47,9 +165,18 @@ if ($fp = fopen("../log_brut/$filename","r"))
 				$color="#D2691E";
 				$nbData21++;
 			break;
+                        case 111:
+                                $color="#D269FF";
+                                $nbData111++;
+                        break;
+                        case 198:
+                                $color="#D20000";
+                                $nbData198++;
+                        break;
+
 
 		}
-
+		$nbtotal++;
 		echo "<tr bgcolor=$color>";
 		foreach ($array as $value) 
 		{
@@ -60,7 +187,6 @@ if ($fp = fopen("../log_brut/$filename","r"))
 	fclose($fp);
 	echo "</table>";
 	echo "<br><br><H3>Statistiques capteurs :<br>";
-	$nbtotal=$nbData0+$nbData1+$nbData11+$nbData21;
 	echo "<H5>Nombre d'echantillons : $nbtotal<br>";
 	
 	echo "<table border=1><tr><td>Capteur</td><td>Nombre echantillons</td><td>Pourcentage echantillons</td></tr>";
@@ -73,8 +199,12 @@ if ($fp = fopen("../log_brut/$filename","r"))
 	echo "<tr bgcolor=#B22222> <td> 11 </td><td> $nbData11 </td><td> $pct %</td></tr>";
 	$pct=round(($nbData21/$nbtotal)*100,2);
 	echo "<tr bgcolor=#D2691E> <td> 21 </td><td> $nbData21 </td><td> $pct %</td></tr>";
-	echo "</table>";
+        $pct=round(($nbData111/$nbtotal)*100,2);
+        echo "<tr bgcolor=#D269FF> <td> 111 </td><td> $nbData111 </td><td> $pct %</td></tr>";
+        $pct=round(($nbData198/$nbtotal)*100,2);
+        echo "<tr bgcolor=#D20000> <td> 198 </td><td> $nbData198 </td><td> $pct %</td></tr>";
 
+	echo "</table>";
 
 	
 }
@@ -84,6 +214,6 @@ else
 }
 ?>
 
-</body>
-</HTML>
 
+	</body>
+</html>
