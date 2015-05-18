@@ -1,5 +1,23 @@
 <?php
 
+/*chart constante*/
+$chart_title='Relevé Météo';
+$chart_subtitle='Temperature et Pluie des dernières 24h';
+
+/*rain*/
+$rain_quantum=0.45;
+$rain_color="blue";
+/*Temperture 1*/
+$temp1_location="Terrasse";
+$temp1_id=198;
+$temp1_color="#A9BCF5";
+/*Temperture 2*/
+$temp2_location="Jardin à l'ombre";
+$temp2_id=111;
+$temp2_color="#00FF00";
+
+/******************Get Args **************************************/
+/*
 function get_val ( $date )
 {
 	return $_GET[$date];
@@ -10,7 +28,55 @@ if($arg_date=='')
         $arg_date=date("Y-m-d");
 }
 $filename = $arg_date;
+*/
+$arg_date=date("Y-m-d");
+
+/******************Get Data from Files ****************************/
+/*get yesteday raw file*/
+$filename=date("Y-m-d",strtotime("-1 days"));
 $filename .= "_data.txt";
+$txt_file    = file_get_contents("/home/pi/log_rtl433/$filename");
+$rows        = explode("\n", $txt_file);
+array_shift($rows);
+foreach($rows as $row => $data)
+{
+    //extract row data
+    $row_data = explode(';', $data);
+    $yesterday[$row]['id']         = $row_data[0];
+    $yesterday[$row]['date']       = $row_data[1];
+    $yesterday[$row]['hour']       = $row_data[2];
+    $yesterday[$row]['temp']       = $row_data[3];
+    $yesterday[$row]['pression']   = $row_data[4];
+    $yesterday[$row]['humidity']   = $row_data[5];
+    $yesterday[$row]['temp2']      = $row_data[6];
+    $yesterday[$row]['battery']    = $row_data[7];
+    $yesterday[$row]['rain']       = $row_data[8];
+}
+/*get today raw file*/
+$filename=date("Y-m-d");
+$filename .= "_data.txt";
+$txt_file    = file_get_contents("/home/pi/log_rtl433/$filename");
+$rows        = explode("\n", $txt_file);
+array_shift($rows);
+foreach($rows as $row => $data)
+{
+    //extract row data
+    $row_data = explode(';', $data);
+    $today[$row]['id']         = $row_data[0];
+    $today[$row]['date']       = $row_data[1];
+    $today[$row]['hour']       = $row_data[2];
+    $today[$row]['temp']       = $row_data[3];
+    $today[$row]['pression']   = $row_data[4];
+    $today[$row]['humidity']   = $row_data[5];
+    $today[$row]['temp2']      = $row_data[6];
+    $today[$row]['battery']    = $row_data[7];
+    $today[$row]['rain']       = $row_data[8];
+}
+
+/*merge yesterday and today*/
+$info = array_merge( $yesterday , $today);
+
+/******************HTML ******************************************/
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -26,27 +92,30 @@ ${demo.css}
 $(function () {
     $('#container').highcharts({
         chart: {
-             zoomType: 'xy'
+             zoomType: 'x'
         },
         title: {
-            text: 'Temperature'
+<?php           echo "text: '$chart_title'"; ?>
         },
         subtitle: {
-            text: 'jardin'
+<?php           echo "text: '$chart_subtitle'"; ?>
         },
         xAxis: {
+            startOnTick: true,
             type: 'datetime',
-            dateTimeLabelFormats: { // don't display the dummy year
-                month: '%e. %b',
+/*            dateTimeLabelFormats: { // don't display the dummy year
+		hour: '%H:%M',                
+		month: '%e. %b',
                 year: '%b'
-            },
+            },*/
             title: {
                 text: 'Heure (UTC)'
             },
              crosshair: true
         },
 
-        yAxis: [{ // Primary yAxis
+        yAxis: [
+        { // Primary yAxis
             labels: {
                 format: '{value}°C',
                 style: {
@@ -58,21 +127,25 @@ $(function () {
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
-            }
-        }, { // Secondary yAxis
+            },
+        }, 
+        { // Secondary yAxis
+                min: 0,
+                max: 5,
+            opposite: true,
+           labels: {
+                format: '{value}mm',
+                style: {
+<?php           echo "color: '$rain_color'"; ?>   
+
+                }
+            },
             title: {
                 text: 'Pluie',
                 style: {
-                    color: Highcharts.getOptions().colors[0]
+<?php           echo "color: '$rain_color'"; ?>    
                 }
             },
-            labels: {
-                format: '{value} mm',
-                style: {
-                    color: Highcharts.getOptions().colors[0]
-                }
-            },
-            opposite: true
         }],
         tooltip: {
         /*    headerFormat: '<b>{series.name}</b><br>',
@@ -89,52 +162,47 @@ $(function () {
         },
 
         series: [{
-            name: 'Terrasse',
+<?php       echo "    name: \"$temp1_location\","; 
+            echo "    color: '$temp1_color',";
+?>
 	    type: 'line',
             data: [
-<?php
-$txt_file    = file_get_contents("/home/pi/log_rtl433/$filename");
-$rows        = explode("\n", $txt_file);
-array_shift($rows);
-foreach($rows as $row => $data)
-{
-    //get row data
-    $row_data = explode(';', $data);
-    $info[$row]['id']         = $row_data[0];
-    $info[$row]['date']       = $row_data[1];
-    $info[$row]['hour']       = $row_data[2];
-    $info[$row]['temp']       = $row_data[3];
-    $info[$row]['pression']   = $row_data[4];
-    $info[$row]['humidity']   = $row_data[5];
-    $info[$row]['temp2']      = $row_data[6];
-    $info[$row]['battery']    = $row_data[7];
-    $info[$row]['rain']       = $row_data[8];
-}
 
-$terrasse_min=200.0;
-$terrasse_max=-200.0;
-$nbData198=0;
+/****************** First Serie **********************************/
+<?php
+$temp1_min=200.0;
+$temp1_max=-200.0;
+$temp1_nbdata=0;
 $rain_start=-1;
 $rain_last=-1;
-foreach($rows as $row => $data)
-{
-    if($info[$row]['id']==198){
-        $array_hour  = explode ( ":" , $info[$row]['hour'] );
+
+$yesterday=date("Y-m-d",strtotime("-1 days"));
+$hour=date("G");
+$arrlength = count($info);
+
+for($row = 0; $row < $arrlength; $row++) {
+
+    $array_hour  = explode ( ":" , $info[$row]['hour'] );
+    if(($info[$row]['date'] == $yesterday )&& ($array_hour[0] < $hour )) {
+        	continue;
+    }
+
+    if($info[$row]['id']==$temp1_id){
 	$array_date  = explode ( "-" , $info[$row]['date'] );
 	$data=$info[$row]['temp'];
-	$rain=$info[$row]['rain'];
+        echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , $array_hour[0] , $array_hour[1] , $array_hour[2] ), $data ],\n") ;    
+    	$temp1_last_row=$row;
+	if($temp1_min > $data)
+		$temp1_min=$data;
+	if($temp1_max < $data)
+		$temp1_max=$data;
+	$temp1_nbdata++;
 
+	$rain=$info[$row]['rain'];
 	if($rain_start == -1) {
 		$rain_start=$rain;	
 	}
 	$rain_last=$rain;
-        echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , $array_hour[0] , $array_hour[1] , $array_hour[2] ), $data ],\n") ;    
-    	$terrasse=$row;
-	if($terrasse_min > $data)
-		$terrasse_min=$data;
-	if($terrasse_max < $data)
-		$terrasse_max=$data;
-	$nbData198++;
     }
 }
 
@@ -146,20 +214,24 @@ foreach($rows as $row => $data)
         }, {
             name: 'Pluie',
 	    type: 'column',
-            color: 'blue',
-            
+            pointWidth: 15,
+<?php           echo "color: '$rain_color',"; ?>            
+            yAxis: 1,
             data: [
 <?php
-
+/****************** Rain Serie **********************************/
 $rainS=$rain_start;
 $rain=$rain_start;
 $rainT=0;
 $current_hour=0;
-foreach($rows as $row => $data)
-{
+$arrlength = count($info);
+for($row = 0; $row < $arrlength; $row++) {
+    $array_hour  = explode ( ":" , $info[$row]['hour'] );
+    if(($info[$row]['date'] == $yesterday )&& ($array_hour[0] < $hour )) {
+        	continue;
+    }
     if($info[$row]['id']==198){
-        $array_hour  = explode ( ":" , $info[$row]['hour'] );
-	$array_date  = explode ( "-" , $info[$row]['date'] );
+       	$array_date  = explode ( "-" , $info[$row]['date'] );
 	
 	//echo ("$current_hour  $array_hour[0] \n");
 	if($current_hour != $array_hour[0]){
@@ -181,27 +253,33 @@ foreach($rows as $row => $data)
             }
 
         },{
-            name: 'Jardin à l\'ombre',
+<?php       echo "    name: \"$temp2_location\","; 
+            echo "    color: '$temp2_color',";
+?>
             type: 'line',
-	    color: '#00FF00',
+	   
             data: [
 <?php
-$jardin_min=200.0;
-$jardin_max=-200.0;
-$nbData111=0;
-foreach($rows as $row => $data)
-{
-    if($info[$row]['id']==111){
-        $array_hour  = explode ( ":" , $info[$row]['hour'] );
-	$array_date  = explode ( "-" , $info[$row]['date'] );
+/****************** Second Serie **********************************/
+$temp2_min=200.0;
+$temp2_max=-200.0;
+$temp2_nbdata=0;
+$arrlength = count($info);
+for($row = 0; $row < $arrlength; $row++) {
+    $array_hour  = explode ( ":" , $info[$row]['hour'] );
+    if(($info[$row]['date'] == $yesterday )&& ($array_hour[0] < $hour )) {
+        	continue;
+    }
+    if($info[$row]['id']==$temp2_id){
+       	$array_date  = explode ( "-" , $info[$row]['date'] );
 	$data=$info[$row]['temp'];
         echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , $array_hour[0] , $array_hour[1] , $array_hour[2] ), $data ],\n") ;    
-    	$jardin=$row;
-	if($jardin_min > $data)
-		$jardin_min=$data;
-	if($jardin_max < $data)
-		$jardin_max=$data;
-	 $nbData111++;
+    	$temp2_last_row=$row;
+	if($temp2_min > $data)
+		$temp2_min=$data;
+	if($temp2_max < $data)
+		$temp2_max=$data;
+	 $temp2_nbdata++;
     }
 }?>
             ],
@@ -221,30 +299,30 @@ foreach($rows as $row => $data)
 
 <?php
 
-
 echo ("<br><br><h2>Données des capteurs du $arg_date:</h2>");
-$date=$info[$jardin]["date"];
-$hour=$info[$jardin]["hour"];
-$data=$info[$jardin]["temp"];
-
-echo ("<FONT color=#00FF00> Dernière mise à jour : $hour<br> Température Jardin : $data minimal : $jardin_min maximal : $jardin_max</font>");
+$date=$info[$temp2_last_row]["date"];
+$hour=$info[$temp2_last_row]["hour"];
+$data=$info[$temp2_last_row]["temp"];
+echo ("<FONT color=$temp2_color> Dernière mise à jour : $hour<br> Température $temp2_location : $data minimal : $temp2_min maximal : $temp2_max</font>");
 echo ("<br><br>");
-echo ("<FONT color=#A9BCF5>Dernière mise à jour : $hour<br> Température Terrasse : $data minimal : $terrasse_min maximal : $terrasse_max</font>");
-$rain=($rain_last-$rain_start)*0.4;
+$date=$info[$temp1_last_row]["date"];
+$hour=$info[$temp1_last_row]["hour"];
+$data=$info[$temp1_last_row]["temp"];
+echo ("<FONT color=$temp1_color>Dernière mise à jour : $hour<br> Température $temp1_location : $data minimal : $temp1_min maximal : $temp1_max</font>");
+$rain=($rain_last-$rain_start)*$rain_quantum;
 echo ("<br><br>");
-echo ("<FONT color=#A9BCF5>Dernière mise à jour : $hour<br> Pluie : $rain</font>");
-
-
+echo ("<FONT color=$rain_color>Dernière mise à jour : $hour<br> Pluie : $rain</font>");
 
 
 echo "<br><br><H2>Statistiques capteurs :</h2>";
-$nbtotal=$nbData111+$nbData198;
-echo "Nombre d'echantillons : $nbtotal<br>";
+$nbtotal=$temp2_nbdata+$temp1_nbdata;
+$arrlength = count($info);
+echo "Nombre d'echantillons : $nbtotal <br>";
 echo "<table border=1><tr><td bgcolor=black>Capteur</td><td>Nombre echantillons</td><td>Pourcentage echantillons</td></tr>";
-$pct=round(($nbData111/$nbtotal)*100,2);
-echo "<tr style='color: #00FF00'> <td> 111 </td><td> $nbData111 </td><td> $pct %</td></tr>";
-$pct=round(($nbData198/$nbtotal)*100,2);
-echo "<tr style='color: #A9BCF5'> <td> 198 </td><td> $nbData198 </td><td> $pct %</td></tr>";
+$pct=round(($temp2_nbdata/$nbtotal)*100,2);
+echo "<tr style='color: $temp2_color'> <td> $temp2_id </td><td> $temp2_nbdata </td><td> $pct %</td></tr>";
+$pct=round(($temp1_nbdata/$nbtotal)*100,2);
+echo "<tr style='color: $temp1_color'> <td> $temp1_id </td><td> $temp1_nbdata </td><td> $pct %</td></tr>";
 
 echo "</table>";
 ?>
