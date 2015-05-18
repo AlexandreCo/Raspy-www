@@ -3,9 +3,10 @@
 GnOmeDataCenter/out/*
 
 GnOmeDataCenter/log_brut/*
-
+GnOmeDataCenter/log_*
 GnOmeDataCenter/log/*
 
+patron
 diy/wikiss/_config.php
 
 Build/*

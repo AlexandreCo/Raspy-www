@@ -68,7 +68,7 @@ $(function () {
 	    
             data: [
 <?php
-if ($fp = fopen("/var/www/GnOmeDataCenter/log_brut/$filename","r"))
+if ($fp = fopen("/home/pi/log_rtl433/$filename","r"))
 {
 	while (!feof($fp)) 
 	{ 
@@ -99,7 +99,7 @@ else
 	    color: '#00FF00',
             data: [
 <?php
-if ($fp = fopen("/var/www/GnOmeDataCenter/log_brut/$filename","r"))
+if ($fp = fopen("/home/pi/log_rtl433/$filename","r"))
 {
 	while (!feof($fp)) 
 	{ 
@@ -137,7 +137,7 @@ else
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <?php
-if ($fp = fopen("/var/www/GnOmeDataCenter/log_brut/$filename","r"))
+if ($fp = fopen("/home/pi/log_rtl433/$filename","r"))
 {
 	echo "<br><br><center><H3>Donn&eacute;es capteurs du $arg_date:<br>";
 	echo "<center><table border=1><tr><td>Capteur</td><td>Date</td><td>Heure(GMT)</td><td>Temp&eacute;rature 1</td><td>Pression</td><td>Humidit&eacute;</td><td>Temp&eacute;rature 2</td><td>Batterie</td><td>Rain</td></tr>";
