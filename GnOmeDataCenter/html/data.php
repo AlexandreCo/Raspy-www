@@ -16,7 +16,7 @@ $filename .= "_data.txt";
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Highcharts Example</title>
+		<title>Metéo</title>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<style type="text/css">
@@ -26,7 +26,7 @@ ${demo.css}
 $(function () {
     $('#container').highcharts({
         chart: {
-            zoomType: 'x'
+             zoomType: 'xy'
         },
         title: {
             text: 'Temperature'
@@ -41,18 +41,43 @@ $(function () {
                 year: '%b'
             },
             title: {
-                text: 'Date'
-            }
-        },
-        yAxis: {
-            title: {
-                text: 'Temperature (°C)'
+                text: 'Heure (UTC)'
             },
-            min: 0
+             crosshair: true
         },
+
+        yAxis: [{ // Primary yAxis
+            labels: {
+                format: '{value}°C',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            title: {
+                text: 'Temperature',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            }
+        }, { // Secondary yAxis
+            title: {
+                text: 'Pluie',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            labels: {
+                format: '{value} mm',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            opposite: true
+        }],
         tooltip: {
-            headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x:%e. %b}: {point.y:.2f} °C'
+        /*    headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x:%e. %b}: {point.y:.2f} °C'*/
+	    shared: true
         },
 
         plotOptions: {
@@ -65,66 +90,124 @@ $(function () {
 
         series: [{
             name: 'Terrasse',
-	    
+	    type: 'line',
             data: [
 <?php
-if ($fp = fopen("/home/pi/log_rtl433/$filename","r"))
+$txt_file    = file_get_contents("/home/pi/log_rtl433/$filename");
+$rows        = explode("\n", $txt_file);
+array_shift($rows);
+foreach($rows as $row => $data)
 {
-	while (!feof($fp)) 
-	{ 
-		$line = fgets($fp, 255);
-		$array = explode ( ";" , $line );
-		switch($array[0])
-		{
-                        case 198:
-				$hour = explode ( ":" , $array[2] );
-				$date = explode ( "-" , $array[1] );
-                        	echo ("[ Date.UTC($date[0],$date[1]-1,$date[2],$hour[0],$hour[1],$hour[2]), $array[3]   ],\n");
-                        break;
-			
-			default:
-			break;
-		}
+    //get row data
+    $row_data = explode(';', $data);
+    $info[$row]['id']         = $row_data[0];
+    $info[$row]['date']       = $row_data[1];
+    $info[$row]['hour']       = $row_data[2];
+    $info[$row]['temp']       = $row_data[3];
+    $info[$row]['pression']   = $row_data[4];
+    $info[$row]['humidity']   = $row_data[5];
+    $info[$row]['temp2']      = $row_data[6];
+    $info[$row]['battery']    = $row_data[7];
+    $info[$row]['rain']       = $row_data[8];
+}
+
+$terrasse_min=200.0;
+$terrasse_max=-200.0;
+$nbData198=0;
+$rain_start=-1;
+$rain_last=-1;
+foreach($rows as $row => $data)
+{
+    if($info[$row]['id']==198){
+        $array_hour  = explode ( ":" , $info[$row]['hour'] );
+	$array_date  = explode ( "-" , $info[$row]['date'] );
+	$data=$info[$row]['temp'];
+	$rain=$info[$row]['rain'];
+
+	if($rain_start == -1) {
+		$rain_start=$rain;	
 	}
-	fclose($fp);
+	$rain_last=$rain;
+        echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , $array_hour[0] , $array_hour[1] , $array_hour[2] ), $data ],\n") ;    
+    	$terrasse=$row;
+	if($terrasse_min > $data)
+		$terrasse_min=$data;
+	if($terrasse_max < $data)
+		$terrasse_max=$data;
+	$nbData198++;
+    }
 }
-else
-{
-	echo ("[ $array[2], $array[3]   ],");
-}
+
 ?>
-            ]
+            ],
+            tooltip: {
+                valueSuffix: '°C'
+            }
         }, {
+            name: 'Pluie',
+	    type: 'column',
+            color: 'blue',
+            
+            data: [
+<?php
+
+$rainS=$rain_start;
+$rain=$rain_start;
+$rainT=0;
+$current_hour=0;
+foreach($rows as $row => $data)
+{
+    if($info[$row]['id']==198){
+        $array_hour  = explode ( ":" , $info[$row]['hour'] );
+	$array_date  = explode ( "-" , $info[$row]['date'] );
+	
+	//echo ("$current_hour  $array_hour[0] \n");
+	if($current_hour != $array_hour[0]){
+	
+		$rainT=($rain-$rainS);
+		$rainS=$rain;
+		echo ("[ Date.UTC( $array_date[0] , $array_date[1] -1, $array_date[2] , $current_hour+1 , 0 , 0 ), $rainT ],\n") ;    
+		$current_hour=$array_hour[0];
+	}
+
+	$rain=$info[$row]['rain'];
+    }
+}
+
+?>
+            ],
+            tooltip: {
+                valueSuffix: ' mm'
+            }
+
+        },{
             name: 'Jardin à l\'ombre',
+            type: 'line',
 	    color: '#00FF00',
             data: [
 <?php
-if ($fp = fopen("/home/pi/log_rtl433/$filename","r"))
+$jardin_min=200.0;
+$jardin_max=-200.0;
+$nbData111=0;
+foreach($rows as $row => $data)
 {
-	while (!feof($fp)) 
-	{ 
-		$line = fgets($fp, 255);
-		$array = explode ( ";" , $line );
-		switch($array[0])
-		{
-                        case 111:
-                             	$hour = explode ( ":" , $array[2] );
-				$date = explode ( "-" , $array[1] );
-                        	echo ("[ Date.UTC($date[0],$date[1]-1,$date[2],$hour[0],$hour[1],$hour[2]), $array[3]   ],\n");
-                        break;
-			
-			default:
-			break;
-		}
-	}
-	fclose($fp);
-}
-else
-{
-	echo ("[ $array[2], $array[3]   ],");
-}
-?>
-            ]
+    if($info[$row]['id']==111){
+        $array_hour  = explode ( ":" , $info[$row]['hour'] );
+	$array_date  = explode ( "-" , $info[$row]['date'] );
+	$data=$info[$row]['temp'];
+        echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , $array_hour[0] , $array_hour[1] , $array_hour[2] ), $data ],\n") ;    
+    	$jardin=$row;
+	if($jardin_min > $data)
+		$jardin_min=$data;
+	if($jardin_max < $data)
+		$jardin_max=$data;
+	 $nbData111++;
+    }
+}?>
+            ],
+            tooltip: {
+                valueSuffix: '°C'
+            }
         }]
     });
 });
@@ -137,83 +220,33 @@ else
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <?php
-if ($fp = fopen("/home/pi/log_rtl433/$filename","r"))
-{
-	echo "<br><br><center><H3>Donn&eacute;es capteurs du $arg_date:<br>";
-	echo "<center><table border=1><tr><td>Capteur</td><td>Date</td><td>Heure(GMT)</td><td>Temp&eacute;rature 1</td><td>Pression</td><td>Humidit&eacute;</td><td>Temp&eacute;rature 2</td><td>Batterie</td><td>Rain</td></tr>";
-	
-	while (!feof($fp)) 
-	{ 
-
-		$line = fgets($fp, 255);
-		$array = explode ( ";" , $line );
-		switch($array[0])
-		{
-			case 0:
-				$color="#008000";
-				$nbData0++;
-			break;
-			case 1:
-				$color="#4B0082";
-				$nbData1++;
-			break;
-			case 11:
-				$color="#B22222";
-				$nbData11++;
-			break;
-			case 21:
-				$color="#D2691E";
-				$nbData21++;
-			break;
-                        case 111:
-                                $color="#D269FF";
-                                $nbData111++;
-                        break;
-                        case 198:
-                                $color="#D20000";
-                                $nbData198++;
-                        break;
 
 
-		}
-		$nbtotal++;
-		echo "<tr bgcolor=$color>";
-		foreach ($array as $value) 
-		{
-    			echo "<td>$value</td>";
-		}
- 		echo "</tr>";
-	}
-	fclose($fp);
-	echo "</table>";
-	echo "<br><br><H3>Statistiques capteurs :<br>";
-	echo "<H5>Nombre d'echantillons : $nbtotal<br>";
-	
-	echo "<table border=1><tr><td>Capteur</td><td>Nombre echantillons</td><td>Pourcentage echantillons</td></tr>";
+echo ("<br><br><h2>Données des capteurs du $arg_date:</h2>");
+$date=$info[$jardin]["date"];
+$hour=$info[$jardin]["hour"];
+$data=$info[$jardin]["temp"];
 
-	$pct=round(($nbData0/$nbtotal)*100,2);
-	echo "<tr bgcolor=#008000> <td> 0 </td><td> $nbData0 </td><td> $pct %</td></tr>";
-	$pct=round(($nbData1/$nbtotal)*100,2);
-	echo "<tr bgcolor=#4B0082> <td> 1 </td><td> $nbData1 </td><td> $pct %</td></tr>";
-	$pct=round(($nbData11/$nbtotal)*100,2);
-	echo "<tr bgcolor=#B22222> <td> 11 </td><td> $nbData11 </td><td> $pct %</td></tr>";
-	$pct=round(($nbData21/$nbtotal)*100,2);
-	echo "<tr bgcolor=#D2691E> <td> 21 </td><td> $nbData21 </td><td> $pct %</td></tr>";
-        $pct=round(($nbData111/$nbtotal)*100,2);
-        echo "<tr bgcolor=#D269FF> <td> 111 </td><td> $nbData111 </td><td> $pct %</td></tr>";
-        $pct=round(($nbData198/$nbtotal)*100,2);
-        echo "<tr bgcolor=#D20000> <td> 198 </td><td> $nbData198 </td><td> $pct %</td></tr>";
+echo ("<FONT color=#00FF00> Dernière mise à jour : $hour<br> Température Jardin : $data minimal : $jardin_min maximal : $jardin_max</font>");
+echo ("<br><br>");
+echo ("<FONT color=#A9BCF5>Dernière mise à jour : $hour<br> Température Terrasse : $data minimal : $terrasse_min maximal : $terrasse_max</font>");
+$rain=($rain_last-$rain_start)*0.4;
+echo ("<br><br>");
+echo ("<FONT color=#A9BCF5>Dernière mise à jour : $hour<br> Pluie : $rain</font>");
 
-	echo "</table>";
 
-	
-}
-else
-{
-	echo ("Pas de Donn&eacute;es dans le fichier $filename");
-}
+
+
+echo "<br><br><H2>Statistiques capteurs :</h2>";
+$nbtotal=$nbData111+$nbData198;
+echo "Nombre d'echantillons : $nbtotal<br>";
+echo "<table border=1><tr><td bgcolor=black>Capteur</td><td>Nombre echantillons</td><td>Pourcentage echantillons</td></tr>";
+$pct=round(($nbData111/$nbtotal)*100,2);
+echo "<tr style='color: #00FF00'> <td> 111 </td><td> $nbData111 </td><td> $pct %</td></tr>";
+$pct=round(($nbData198/$nbtotal)*100,2);
+echo "<tr style='color: #A9BCF5'> <td> 198 </td><td> $nbData198 </td><td> $pct %</td></tr>";
+
+echo "</table>";
 ?>
-
-
 	</body>
 </html>
