@@ -131,7 +131,7 @@ $(function () {
         }, 
         { // Secondary yAxis
                 min: 0,
-                max: 5,
+                max: 10,
             opposite: true,
            labels: {
                 format: '{value}mm',
@@ -173,8 +173,7 @@ $(function () {
 $temp1_min=200.0;
 $temp1_max=-200.0;
 $temp1_nbdata=0;
-$rain_start=-1;
-$rain_last=-1;
+
 
 $yesterday=date("Y-m-d",strtotime("-1 days"));
 $hour=date("G");
@@ -197,12 +196,6 @@ for($row = 0; $row < $arrlength; $row++) {
 	if($temp1_max < $data)
 		$temp1_max=$data;
 	$temp1_nbdata++;
-
-	$rain=$info[$row]['rain'];
-	if($rain_start == -1) {
-		$rain_start=$rain;	
-	}
-	$rain_last=$rain;
     }
 }
 
@@ -220,32 +213,46 @@ for($row = 0; $row < $arrlength; $row++) {
             data: [
 <?php
 /****************** Rain Serie **********************************/
-$rainS=$rain_start;
-$rain=$rain_start;
+$rain_start=-1;
 $rainT=0;
 $current_hour=0;
 $arrlength = count($info);
-for($row = 0; $row < $arrlength; $row++) {
+for($row = 0; $row < $arrlength-1; $row++) {
     $array_hour  = explode ( ":" , $info[$row]['hour'] );
-    if(($info[$row]['date'] == $yesterday )&& ($array_hour[0] < $hour )) {
-        	continue;
+    if(($info[$row]['date'] == $yesterday )&& ($array_hour[0] <= $hour )) {
+        	$current_array_hour=$array_hour;
+		$current_array_date=$array_date;
+		continue;
     }
+
     if($info[$row]['id']==198){
        	$array_date  = explode ( "-" , $info[$row]['date'] );
-	
+	if($rain_start == -1) {
+		$rainS=$rain_start=$rain=$info[$row]['rain'];
+	}	
 	//echo ("$current_hour  $array_hour[0] \n");
-	if($current_hour != $array_hour[0]){
+	if($current_array_hour[0] != $array_hour[0]){
 	
 		$rainT=($rain-$rainS);
 		$rainS=$rain;
-		echo ("[ Date.UTC( $array_date[0] , $array_date[1] -1, $array_date[2] , $current_hour+1 , 0 , 0 ), $rainT ],\n") ;    
-		$current_hour=$array_hour[0];
+		echo ("[ Date.UTC( $current_array_date[0] , $current_array_date[1] -1, $current_array_date[2] , $current_array_hour[0] , 30 , 0 ), $rainT*$rain_quantum ],\n") ;    
+		$current_array_hour=$array_hour;
+		$current_array_date=$array_date;
 	}
 
 	$rain=$info[$row]['rain'];
     }
 }
-
+/* current rain*/
+$rainT=($rain-$rainS);
+$rain_total=($rain-$rain_start)*$rain_quantum;
+$h=$array_hour[0]+1;
+$d=$array_date[2];
+if($h == 23){
+	$h=0;
+	$d++;
+}
+echo ("[ Date.UTC( $array_date[0] , $array_date[1] -1, $array_date[2] ,  $array_hour[0] , 30 , 0 ), $rainT*$rain_quantum ],\n") ;  
 ?>
             ],
             tooltip: {
@@ -303,15 +310,14 @@ echo ("<br><br><h2>Données des capteurs du $arg_date:</h2>");
 $date=$info[$temp2_last_row]["date"];
 $hour=$info[$temp2_last_row]["hour"];
 $data=$info[$temp2_last_row]["temp"];
-echo ("<FONT color=$temp2_color> Dernière mise à jour : $hour<br> Température $temp2_location : $data minimal : $temp2_min maximal : $temp2_max</font>");
+echo ("<FONT color=$temp2_color> Dernière mise à jour : $hour<br> Température $temp2_location : $data °C, minimal : $temp2_min °C maximal : $temp2_max °C</font>");
 echo ("<br><br>");
 $date=$info[$temp1_last_row]["date"];
 $hour=$info[$temp1_last_row]["hour"];
 $data=$info[$temp1_last_row]["temp"];
-echo ("<FONT color=$temp1_color>Dernière mise à jour : $hour<br> Température $temp1_location : $data minimal : $temp1_min maximal : $temp1_max</font>");
-$rain=($rain_last-$rain_start)*$rain_quantum;
+echo ("<FONT color=$temp1_color>Dernière mise à jour : $hour<br> Température $temp1_location : $data °C, minimal : $temp1_min °C, maximal : $temp1_max °C</font>");
 echo ("<br><br>");
-echo ("<FONT color=$rain_color>Dernière mise à jour : $hour<br> Pluie : $rain</font>");
+echo ("<FONT color=$rain_color>Dernière mise à jour : $hour<br> Pluie : $rain_total mm</font>");
 
 
 echo "<br><br><H2>Statistiques capteurs :</h2>";
