@@ -311,14 +311,17 @@ $date=$info[$temp2_last_row]["date"];
 $hour=$info[$temp2_last_row]["hour"];
 $data=$info[$temp2_last_row]["temp"];
 echo ("<FONT color=$temp2_color> Dernière mise à jour : $hour<br> Température $temp2_location : $data °C, minimal : $temp2_min °C maximal : $temp2_max °C</font>");
+echo ("<br>");
+echo ("<a href=minmax.php?sensor=$temp2_id color=$temp2_color>Minima et Maxima</a>");
 echo ("<br><br>");
 $date=$info[$temp1_last_row]["date"];
 $hour=$info[$temp1_last_row]["hour"];
 $data=$info[$temp1_last_row]["temp"];
 echo ("<FONT color=$temp1_color>Dernière mise à jour : $hour<br> Température $temp1_location : $data °C, minimal : $temp1_min °C, maximal : $temp1_max °C</font>");
+echo ("<br>");
+echo ("<a href=minmax.php?sensor=$temp1_id color=$temp1_color>Minima et Maxima</a>");
 echo ("<br><br>");
 echo ("<FONT color=$rain_color>Dernière mise à jour : $hour<br> Pluie : $rain_total mm</font>");
-
 
 echo "<br><br><H2>Statistiques capteurs :</h2>";
 $nbtotal=$temp2_nbdata+$temp1_nbdata;
