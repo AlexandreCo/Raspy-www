@@ -234,6 +234,10 @@ for($row = 0; $row < $arrlength-1; $row++) {
 	if($current_array_hour[0] != $array_hour[0]){
 	
 		$rainT=($rain-$rainS);
+		if($rainT<0){
+			$rainT+=256;
+		}
+		$rain_total+=$rainT;
 		$rainS=$rain;
 		echo ("[ Date.UTC( $current_array_date[0] , $current_array_date[1] -1, $current_array_date[2] , $current_array_hour[0] , 30 , 0 ), $rainT*$rain_quantum ],\n") ;    
 		$current_array_hour=$array_hour;
@@ -245,7 +249,7 @@ for($row = 0; $row < $arrlength-1; $row++) {
 }
 /* current rain*/
 $rainT=($rain-$rainS);
-$rain_total=($rain-$rain_start)*$rain_quantum;
+/*$rain_total=($rain-$rain_start)*$rain_quantum;*/
 $h=$array_hour[0]+1;
 $d=$array_date[2];
 if($h == 23){
@@ -321,6 +325,7 @@ echo ("<FONT color=$temp1_color>Dernière mise à jour : $hour<br> Température 
 echo ("<br>");
 echo ("<a href=minmax.php?sensor=$temp1_id color=$temp1_color>Minima et Maxima</a>");
 echo ("<br><br>");
+$rain_total*=$rain_quantum;
 echo ("<FONT color=$rain_color>Dernière mise à jour : $hour<br> Pluie : $rain_total mm</font>");
 
 echo "<br><br><H2>Statistiques capteurs :</h2>";
