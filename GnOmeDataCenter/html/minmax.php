@@ -114,7 +114,9 @@ for($row = 0; $row < $arrlength; $row++) {
 
 	$array_date  = explode ( "-" , $info[$row]['date'] );
 	$data=$info[$row]['min'];
-	echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , 0 , 0 , 0 ), $data ],\n") ;    
+	if ($data!=''){
+		echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , 0 , 0 , 0 ), $data ],\n") ;    
+	}
 }
 ?>
             ],
@@ -135,7 +137,9 @@ for($row = 0; $row < $arrlength; $row++) {
 
 	$array_date  = explode ( "-" , $info[$row]['date'] );
 	$data=$info[$row]['max'];
-	echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , 0 , 0 , 0 ), $data ],\n") ;    
+	if ($data!=''){
+		echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , 0 , 0 , 0 ), $data ],\n") ;    
+	}
 }
 ?>
             ],
