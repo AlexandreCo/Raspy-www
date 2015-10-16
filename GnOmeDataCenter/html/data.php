@@ -9,7 +9,7 @@ $rain_quantum=0.45;
 $rain_color="blue";
 /*Temperture 1*/
 $temp1_location="Terrasse";
-$temp1_id=198;
+$temp1_id=4;
 $temp1_color="#A9BCF5";
 /*Temperture 2*/
 $temp2_location="Jardin à l'ombre";
@@ -225,7 +225,7 @@ for($row = 0; $row < $arrlength-1; $row++) {
 		continue;
     }
 
-    if($info[$row]['id']==198){
+    if($info[$row]['id']==4){
        	$array_date  = explode ( "-" , $info[$row]['date'] );
 	if($rain_start == -1) {
 		$rainS=$rain_start=$rain=$info[$row]['rain'];
