@@ -1,36 +1,48 @@
 <?php
+$nb_days=$_GET['days'];
+if($nb_days==''){
+	$nb_days=365;
+}
 
 /*chart constante*/
-$chart_title='Relevé Météo';
-$chart_subtitle='Minima et maxima';
+$chart_title='Ecowatt Jour';
+$chart_subtitle='Consommation par jour';
 
-$temp_id=$_GET['sensor'];
-if($temp_id==''){
-	$temp_id=111;
-}
-$sensor=4;
-/*Temperture 1*/
-$temp1_location="Jardin à l'ombre minima";
-$temp1_color="blue";
-/*Temperture 2*/
-$temp2_location="Jardin à l'ombre maxima";
-$temp2_color="red";
+/*Consommation*/
+$watt_location="Consommation Electricité";
+$watt_id=4;
+$watt_color="#A9BCF5";
 
 
-/******************Get Data from Files ****************************/
 /*get yesteday raw file*/
-$filename="$temp_id-$sensor-minmax_days.dat";
-$txt_file    = file_get_contents("/home/pi/log_rtl433/minmax/$filename");
+$filename="kwattday.csv";
+
+$txt_file    = file_get_contents("/home/pi/log_ecowatt/$filename");
 $rows        = explode("\n", $txt_file);
 array_shift($rows);
+$index=0;
+$arg_date=date("Y-m-d");
 foreach($rows as $row => $data)
 {
-    //extract row data
-    $row_data = explode(';', $data);
-    $info[$row]['date']       = $row_data[0];
-    $info[$row]['min']       = $row_data[1];
-    $info[$row]['max']       = $row_data[2];
+	//extract row data
+	$row_data = explode(';', $data);
+
+	$arrlength = count($row_data);
+	if("$row_data[1]"==""){
+		break;
+	}
 	
+	if($nb_days==$index){
+		break;
+	}
+	
+
+	$array_watt[$index]['jour'] = $row_data[0];
+	$array_watt[$index]['kwatt']= $row_data[1];
+	
+
+	$index++;
+
 }
 
 /******************HTML ******************************************/
@@ -74,13 +86,13 @@ $(function () {
         yAxis: [
         { // Primary yAxis
             labels: {
-                format: '{value}°C',
+                format: '{value}kWatt',
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
             },
             title: {
-                text: 'Temperature',
+                text: 'Consommation',
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
@@ -101,50 +113,38 @@ $(function () {
         },
 
         series: [{
-<?php       echo "    name: \"$temp1_location\","; 
-            echo "    color: '$temp1_color',";
+<?php       echo "	    name: \"$watt_location\","; 
+            echo "	    color: '$watt_color',";
 ?>
 	    type: 'line',
             data: [
 
-/****************** First Serie **********************************/
+	       /****************** First Serie **********************************/
 <?php
-$arrlength = count($info)-1;
+$watt_min=200.0;
+$watt_max=-200.0;
+$watt_nbdata=0;
+
+
+$yesterday=date("Y-m-d",strtotime("-1 days"));
+$hour=date("G");
+$arrlength = count($array_watt);
+
 for($row = 0; $row < $arrlength; $row++) {
 
-	$array_date  = explode ( "-" , $info[$row]['date'] );
-	$data=$info[$row]['min'];
-	if ($data!=''){
-		echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , 0 , 0 , 0 ), $data ],\n") ;    
-	}
-}
-?>
-            ],
-            tooltip: {
-                valueSuffix: '°C'
-            }
-        },{
-<?php       echo "    name: \"$temp2_location\","; 
-            echo "    color: '$temp2_color',";
-?>
-            type: 'line',
-	   
-            data: [
-/****************** Second Serie **********************************/
-<?php
-$arrlength = count($info)-1;
-for($row = 0; $row < $arrlength; $row++) {
-
-	$array_date  = explode ( "-" , $info[$row]['date'] );
-	$data=$info[$row]['max'];
-	if ($data!=''){
-		echo ("[ Date.UTC( $array_date[0] , $array_date[1]-1 , $array_date[2] , 0 , 0 , 0 ), $data ],\n") ;    
-	}
+    $date=$array_watt[$row]['jour'];
+    $array_date  = explode ( "/" , $date );
+    
+    $year=$array_date[2];
+    $month=$array_date[1]-1;
+    $day=$array_date[0];
+    $value=$array_watt[$row]['kwatt'];
+    echo ("	       [ Date.UTC( 20$year , $month , $day , 0 , 0 , 0 ), $value ],\n") ;    
 }
 ?>
             ],/*data*/
             tooltip: {
-                valueSuffix: '°C'
+                valueSuffix: 'kWatt'
             }
         }]/*serie*/
     });/*highchart*/
@@ -156,6 +156,7 @@ for($row = 0; $row < $arrlength; $row++) {
 <script src="/highcharts/js/modules/exporting.js"></script>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<center><a href=data.php>retour</a>
-</body>
+
+
+	</body>
 </html>
