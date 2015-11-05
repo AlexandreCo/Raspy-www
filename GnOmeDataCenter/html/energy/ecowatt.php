@@ -1,49 +1,45 @@
 <?php
-$nb_days=$_GET['days'];
-if($nb_days==''){
-	$nb_days=365;
-}
 
 /*chart constante*/
 $chart_title='Ecowatt Jour';
 $chart_subtitle='Consommation par jour';
 
 /*Consommation*/
-$watt_location="Consommation Electricité";
+$watt_location="Watt";
 $watt_id=4;
 $watt_color="#A9BCF5";
 
 
 /*get yesteday raw file*/
-$filename="kwattday.csv";
+$filename="last.csv";
 
 $txt_file    = file_get_contents("/home/pi/log_ecowatt/$filename");
 $rows        = explode("\n", $txt_file);
 array_shift($rows);
 $index=0;
-$arg_date=date("Y-m-d");
 foreach($rows as $row => $data)
 {
 	//extract row data
 	$row_data = explode(';', $data);
-
 	$arrlength = count($row_data);
-	if("$row_data[1]"==""){
-		break;
+	if($arrlength==2)
+	{
+
+		if($index<256)
+		{
+			$arg_date=date("Y-m-d");
+			$array_watt[$index]['jour'] = $row_data[0];
+			$array_watt[$index]['kwatt']= $row_data[1];
+			$value=$array_watt[$index]['kwatt'];
+			if($value=="Mesure")
+			{}else{
+				/*echo("$index $value\n");*/
+				$index++;
+			}
+		}
 	}
-	
-	if($nb_days==$index){
-		break;
-	}
-	
-
-	$array_watt[$index]['jour'] = $row_data[0];
-	$array_watt[$index]['kwatt']= $row_data[1];
-	
-
-	$index++;
-
 }
+
 
 /******************HTML ******************************************/
 ?>
@@ -51,7 +47,7 @@ foreach($rows as $row => $data)
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Metéo</title>
+		<title>Energie</title>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<style type="text/css">
@@ -78,7 +74,7 @@ $(function () {
                 year: '%b'
             },*/
             title: {
-                text: 'Date'
+                text: 'Jour (UTC)'
             },
              crosshair: true
         },
@@ -92,15 +88,13 @@ $(function () {
                 }
             },
             title: {
-                text: 'Consommation',
+                text: 'Watt',
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
             },
         }],
         tooltip: {
-        /*    headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x:%e. %b}: {point.y:.2f} °C'*/
 	    shared: true
         },
 
@@ -139,8 +133,9 @@ for($row = 0; $row < $arrlength; $row++) {
     $month=$array_date[1]-1;
     $day=$array_date[0];
     $value=$array_watt[$row]['kwatt'];
-    echo ("	       [ Date.UTC( 20$year , $month , $day , 0 , 0 , 0 ), $value ],\n") ;    
+    echo ("	       [ Date.UTC( 20$year , $month , $day , 12 , 0 , 0 ), $value ],\n") ;    
 }
+
 ?>
             ],/*data*/
             tooltip: {
