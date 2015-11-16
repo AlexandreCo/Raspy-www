@@ -28,7 +28,7 @@ if ($type=="elec") {
 }
 
 if ($type=="eau") {
-	$chart_title='Compteur Electricité';
+	$chart_title='Compteur Eau';
 	$filename="eau.csv";
 	$grandeur="m3 ";
 	$serie_name="eau";
@@ -78,7 +78,9 @@ foreach($rows as $row => $data)
 		$value=$newindex/($periode_sec/86400);
 		$array_serie[$line]['jour'] = $row_data[0];
 		$array_serie[$line]['value']= $value;
+		//echo "$row_data[0] $value <br>\n";
 		$line++;
+
 	}
 	$lastindex=$currentindex;
 	$lastdate=$date;
@@ -126,6 +128,7 @@ $(function () {
         { // Primary yAxis
             labels: {
 <?php echo("\t\t\tformat: '{value}$grandeur',\n");?>
+		
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
@@ -136,6 +139,7 @@ $(function () {
                     color: Highcharts.getOptions().colors[1]
                 }
             },
+	    min: 0,
         }],
         tooltip: {
 	    shared: true

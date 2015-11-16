@@ -4,11 +4,8 @@ if($arg_date==''){
 	$arg_date=date("ymd");
 }
 
-$num_day=$_GET['day'];
-if($num_day==''){
-	$num_day=1;
-}
 
+$num_day=1;
 
 $chart_subtitle='Consommation moyenne par heure';
 
@@ -22,12 +19,15 @@ $total_watt=0;
 /*get yesteday raw file*/
 $filename=$arg_date."_ecowatt";
 
+echo "$hier\n";
+echo "$demain\n";
 $txt_file    = file_get_contents("/home/pi/log_ecowatt_brut/$filename");
 $rows        = explode("\n", $txt_file);
 array_shift($rows);
 $index=-1;
 $watt=0;
 $lasthour=-1;
+$watttotal=0;
 foreach($rows as $row => $data)
 {
 
@@ -36,27 +36,41 @@ foreach($rows as $row => $data)
 	//extract row data
 	$row_data = explode(',', $data);
 	$arrlength = count($row_data);
+	if(($arrlength>5 and $row_data[5]=="ok") or ($arrlength==3)){
 
-	$array_hour  = explode ( ":" , $row_data[1] );
-	$hour=$array_hour[0];
-	$min=$array_hour[1];
-	$sec=$array_hour[2];
+		$sample=$row_data[2];
+		if($sample<20000){
 
-	if($hour!=$lasthour){
-		$index++;
-		$lasthour=$hour;
-		$watt=0;
-		$nbsample=0;
+			$array_hour  = explode ( ":" , $row_data[1] );
+			$hour=$array_hour[0];
+			$min=$array_hour[1];
+			$sec=$array_hour[2];
+
+			if($hour!=$lasthour){
+				$index++;
+				$lasthour=$hour;
+				 
+				if($nbsample){
+					$watttotal+=($watt/$nbsample);
+				}
+				//echo "$watttotal $watt $nbsample<br>\n" ;
+				$watt=0;
+				$nbsample=0;
+			}
+
+
+			$array_watt[$index]['jour'] = $row_data[0];
+			$hour= $row_data[1];	
+			$watt+=$sample;
+			$nbsample++;
+			$array_watt[$index]['heure'] =$hour;
+			$array_watt[$index]['watt']= $watt/$nbsample;
+		}	
+		
 	}
-
-
-	$array_watt[$index]['jour'] = $row_data[0];
-	$hour= $row_data[1];	
-	$watt+=$row_data[2];
-	$nbsample++;
-	$array_watt[$index]['heure'] =$hour;
-	$array_watt[$index]['watt']= $watt/$nbsample;
-	
+}
+if($nbsample){
+	$watttotal+=($watt/$nbsample);
 }
 
 /******************HTML ******************************************/
@@ -89,8 +103,7 @@ $(function () {
 		
 		//echo "date(\"l\", mktime(0, 0, 0, $array_date[0], $array_date[1], 2000+$array_date[2]));";
 
-		
-		$chart_title=$arg_date;/*("l jS \of F Y", mktime(0, 0, 0, $array_date[1], $array_date[0], 2000+$array_date[2]));*/
+		$chart_title=date('l jS \of F Y', strtotime("20$arg_date"));
 		
 		echo "text: '$chart_title'"; ?>
         },
@@ -191,16 +204,24 @@ $(function () {
 });/*function*/
 		</script>
 	</head>
-	<body bgcolor=black text=white link=blue vlink=yellow>
+	<body>
 <script src="/highcharts/js/highcharts.js"></script>
 <script src="/highcharts/js/modules/exporting.js"></script>
-
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <?php 
-	echo "<center>";
-	echo "<br>Electricity current : $value Wh"; 
-	echo "<br>Max power : $watt_max W at $watt_max_hour"; 
+	echo "<center>\n";
+	echo "<br>Electricity current : $value Wh\n"; 
+	echo "<br>Max power : $watt_max W at $watt_max_hour <br>\n"; 
+	echo "<br>Total : $watttotal W <br>\n"; 
+	$yesterdayA=date('ymd', strtotime("20$arg_date - 1 day"));
+	$yesterday=date('Y-m-d', strtotime("20$arg_date - 1 day"));
+	echo "<a href='ecowattbruthourly.php?date=$yesterdayA'>$yesterday</a>\n";
+	$tomorrowA=date('ymd', strtotime("20$arg_date + 1 day"));
+	$tomorrow=date('Y-m-d', strtotime("20$arg_date + 1 day"));
+	echo "<a href='ecowattbruthourly.php?date=$tomorrowA'>$tomorrow</a>\n";
+	echo "</center>\n";
+
 ?>
 	</body>
 </html>

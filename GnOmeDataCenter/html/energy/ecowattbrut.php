@@ -1,4 +1,9 @@
 <?php
+$arg_date=$_GET['date'];
+if($arg_date==''){
+	$arg_date=date("ymd");
+}
+
 $nb_hours=$_GET['hours'];
 if($nb_hours==''){
 	$nb_hours=48;
@@ -19,15 +24,13 @@ $watt_color1="#A9BCF5";
 $watt_color2="#AAAAAA";
 $watt_max=0;
 $total_watt=0;
-/*get yesteday raw file*/
-$arg_date=date("ymd");
 $filename=$arg_date."_ecowatt";
 
 $txt_file    = file_get_contents("/home/pi/log_ecowatt_brut/$filename");
 $rows        = explode("\n", $txt_file);
 array_shift($rows);
 $index=0;
-$arg_date=date("Y-m-d");
+$argdate=date('Y-m-d', strtotime("20$arg_date"));
 foreach($rows as $row => $data)
 {
 
@@ -36,11 +39,17 @@ foreach($rows as $row => $data)
 
 
 	$arrlength = count($row_data);
+	//echo "$arrlength\n"; 
+	if(($arrlength>5 and $row_data[5]=="ok") or ($arrlength==3)){
+		$sample=$row_data[2];
+		if($sample<20000){
+			$array_watt[$index]['jour'] = $row_data[0];
+			$array_watt[$index]['heure'] = $row_data[1];
+			$array_watt[$index]['watt']= $row_data[2];
+			$index++;	
+		}	
+	}
 
-	$array_watt[$index]['jour'] = $row_data[0];
-	$array_watt[$index]['heure'] = $row_data[1];
-	$array_watt[$index]['watt']= $row_data[2];
-	$index++;
 }
 
 /******************HTML ******************************************/
@@ -74,8 +83,7 @@ $(function () {
 		//echo "date(\"l\", mktime(0, 0, 0, $array_date[0], $array_date[1], 2000+$array_date[2]));";
 
 		
-		$chart_title=$arg_date;/*("l jS \of F Y", mktime(0, 0, 0, $array_date[1], $array_date[0], 2000+$array_date[2]));*/
-		
+		$chart_title=date('l jS \of F Y', strtotime("20$arg_date"));		
 		echo "text: '$chart_title'"; ?>
         },
         subtitle: {
@@ -86,7 +94,7 @@ $(function () {
             type: 'datetime',
 
             title: {
-                text: 'Date'
+                text: 'Heure'
             },
             labels: {
                 overflow: 'justify'
@@ -97,7 +105,7 @@ $(function () {
         yAxis: [
         { // Primary yAxis
             labels: {
-                format: '{value}kWatt',
+                format: '{value}Watt',
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
@@ -136,7 +144,7 @@ $(function () {
 	$nbdays = count($array_days);
 
 
-	echo "\t\t\t{     name: \"$arg_date\", \n";
+	echo "\t\t\t{     name: \"$argdate\", \n";
 	echo "\t\t\t\tdata: [\n";
 
 	$arrlength = count($array_watt);
@@ -175,7 +183,7 @@ $(function () {
 });/*function*/
 		</script>
 	</head>
-	<body bgcolor=black text=white link=blue vlink=yellow>
+	<body>
 <script src="/highcharts/js/highcharts.js"></script>
 <script src="/highcharts/js/modules/exporting.js"></script>
 
@@ -184,7 +192,13 @@ $(function () {
 <?php 
 	echo "<center>";
 	echo "<br>Electricity current : $value Wh"; 
-	echo "<br>Max power : $watt_max W at $watt_max_hour"; 
+	echo "<br>Max power : $watt_max W at $watt_max_hour<br>"; 
+	$yesterdayA=date('ymd', strtotime("20$arg_date - 1 day"));
+	$yesterday=date('Y-m-d', strtotime("20$arg_date - 1 day"));
+	echo "<a href='ecowattbrut.php?date=$yesterdayA'>$yesterday</a>\n";
+	$tomorrowA=date('ymd', strtotime("20$arg_date + 1 day"));
+	$tomorrow=date('Y-m-d', strtotime("20$arg_date + 1 day"));
+	echo "<a href='ecowattbrut.php?date=$tomorrowA'>$tomorrow</a>\n";
 ?>
 	</body>
 </html>
