@@ -10,7 +10,6 @@ if($nb_day==''){
 }
 //echo "$nb_day<br>\n";
 
-
 $chart_subtitle='Consommation par jour';
 
 /*Consommation*/
@@ -20,8 +19,12 @@ $watt_color1="#A9BCF5";
 $watt_color2="#AAAAAA";
 $watt_max=0;
 $total_watt=0;
-$day=$arg_date;
+$nb=$nb_day-1;
+$watt_lastyear=8.18;
+$watt_objectif=7.52;
+$day=date('ymd', strtotime("20$arg_date - $nb day"));
 
+$lasttime=0;
 for( $index=0;$index<$nb_day;$index++){
 
 	/*get yesteday raw file*/
@@ -38,30 +41,42 @@ for( $index=0;$index<$nb_day;$index++){
 		$row_data = explode(',', $data);
 		$arrlength = count($row_data);
 		if(($arrlength>5 and $row_data[5]=="ok") or ($arrlength==3)){
-
 			$sample=$row_data[2];
 			if($sample<20000){
-				$watt+=$sample;
-				$nbsample++;
+			
+				$array_time= explode('/', $row_data[0]);
+				//echo "$array_time[0], $array_time[1], $array_time[2]";
+				$array_hour= explode(':', $row_data[1]);
+				$time=mktime($array_hour[0], $array_hour[1], $array_hour[2], $array_time[0], $array_time[1], $array_time[2]);	
+
+				if($lasttime){
+					$delay=$time-$lasttime;						
+				}else{
+					$firsttime=$time;
+				}
+
+				$lasttime=$time;
+				//echo date(DATE_RFC2822, $time);
+				//echo "\t$delay\t$sample\t$watt<br>\n";
+				$watt+=(($sample*$delay)/3600);
 			}	
 		}
 	}
 
 
-	if($nbsample){
-		$value=($watt/$nbsample);
-	}
-	else{
-		$value=0;
-	}
-	$array_watt[$index]['kwatt']=($value*24)/1000;
+	$array_watt[$index]['kwatt']=($watt)/1000;
 	$array_watt[$index]['jour']=date('Y-m-d', strtotime("20$day"));
-	
+	$total_watt+=($watt/1000);
+	//echo date('Y-m-d', strtotime("20$day"));
+	//echo " $watt<br>\n";
 
 	//echo "$day :  $value <br>\n";
-	$day=date('ymd', strtotime("20$day - 1 day"));
+	$day=date('ymd', strtotime("20$day + 1 day"));
 	
 }
+$nb_day_real=($time-$firsttime)/86400;
+$watt_mean=($total_watt)/($nb_day_real);
+
 
 /******************HTML ******************************************/
 ?>
@@ -88,8 +103,7 @@ $(function () {
 		$current_day=$array_watt[$index]['jour'] ;
 		$array_date=explode('/',$current_day);
 		
-		//echo "date(\"l\", mktime(0, 0, 0, $array_date[0], $array_date[1], 2000+$array_date[2]));";
-		$dayfirst=date('l jS \of F Y', strtotime("20$day"));
+		$dayfirst=date('l jS \of F Y', strtotime("20$arg_date - $nb day"));
 		$daylast=date('l jS \of F Y', strtotime("20$arg_date"));
 		
 		$chart_title="$dayfirst $daylast";
@@ -124,6 +138,44 @@ $(function () {
                     color: Highcharts.getOptions().colors[1]
                 }
             },
+            plotLines: [
+		{
+<?php echo "			value: $watt_lastyear,\n"; ?>
+		        color: 'red',
+		        width: 1,
+		        label: {
+		            text: 'Moyenne 2014',
+		            align: 'center',
+		            style: {
+		                color: 'gray'
+		            }
+			}
+		},
+		{
+<?php echo "			value: $watt_objectif,\n"; ?>
+		        color: 'orange',
+		        width: 1,
+		        label: {
+		            text: 'Objectif 2015',
+		            align: 'center',
+		            style: {
+		                color: 'gray'
+		            }
+			}
+		},
+		{
+<?php echo "			value: $watt_mean,\n"; ?>
+		        color: 'green',
+		        width: 1,
+		        label: {
+		            text: 'Moyenne',
+		            align: 'center',
+		            style: {
+		                color: 'gray'
+		            }
+			}
+		}
+            ],
 	    min: 0,
         }],
         tooltip: {
@@ -161,8 +213,19 @@ $(function () {
 			$watt_max=$value;
 			$watt_max_date=$date;
 		}
-		$total_watt+=$value;
-	    echo ("\t\t\t\t\t[ Date.UTC( $year , $month-1 , $day , 0 , 0 , 0 ), $value ],\n") ;    
+		
+	  //  echo ("\t\t\t\t\t[ Date.UTC( $year , $month-1 , $day , 0 , 0 , 0 ), { y:$value } ],\n") ;  
+  		if($value>$watt_lastyear){
+			$color='red';
+		}else{
+	  		if($value>$watt_objectif){
+				$color='orange';
+			}else{
+				$color='green';
+			}
+		}
+		echo ("\t\t\t\t\t{x: Date.UTC( $year , $month-1 , $day , 0 , 0 , 0 ), y: $value , color: '$color'} ,\n") ;    
+	
 	}
 	echo "\t\t\t\t], tooltip: {valueSuffix: 'kWatt'}\n";
 	echo "\t\t\t},/*serie*/\n";
@@ -184,6 +247,7 @@ $(function () {
 	echo "<center>\n";
 	echo "<br>Max power : $watt_max KWatt at $watt_max_date <br>\n"; 
 	echo "<br>Total : $total_watt KWatt <br>\n"; 
+	echo "<br>Moyenne : $watt_mean KWatt <br>\n"; 
 	echo "</center>\n";
 
 ?>

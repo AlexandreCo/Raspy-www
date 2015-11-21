@@ -30,9 +30,6 @@ $lasthour=-1;
 $watttotal=0;
 foreach($rows as $row => $data)
 {
-
-
-
 	//extract row data
 	$row_data = explode(',', $data);
 	$arrlength = count($row_data);
@@ -216,10 +213,10 @@ $(function () {
 	echo "<br>Total : $watttotal W <br>\n"; 
 	$yesterdayA=date('ymd', strtotime("20$arg_date - 1 day"));
 	$yesterday=date('Y-m-d', strtotime("20$arg_date - 1 day"));
-	echo "<a href='ecowattbruthourly.php?date=$yesterdayA'>$yesterday</a>\n";
+	echo "<a href='hourly.php?date=$yesterdayA'>$yesterday</a>\n";
 	$tomorrowA=date('ymd', strtotime("20$arg_date + 1 day"));
 	$tomorrow=date('Y-m-d', strtotime("20$arg_date + 1 day"));
-	echo "<a href='ecowattbruthourly.php?date=$tomorrowA'>$tomorrow</a>\n";
+	echo "<a href='hourly.php?date=$tomorrowA'>$tomorrow</a>\n";
 	echo "</center>\n";
 
 ?>
